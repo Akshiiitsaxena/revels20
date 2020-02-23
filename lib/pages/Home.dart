@@ -1,0 +1,572 @@
+import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+//import 'package:flutter_inappwebview/flutter_inappwebview.dart' as wv;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:revels20/HomeImages.dart';
+import 'package:revels20/main.dart';
+import 'package:revels20/models/UserModel.dart';
+import 'package:revels20/pages/Categories.dart';
+import 'package:revels20/pages/DelegateCards.dart';
+import 'package:revels20/pages/Flagshipevents.dart';
+import 'package:revels20/pages/LiveBlog.dart';
+import 'package:revels20/pages/Login.dart';
+import 'package:revels20/pages/Events.dart';
+import 'package:revels20/pages/Proshow.dart';
+import 'package:revels20/pages/Sponsors.dart';
+import 'package:revels20/pages/drawer.dart';
+import 'package:revels20/pages/faq.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'Developers.dart';
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+String buyCookie;
+
+class _HomeState extends State<Home> {
+  GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+  // Future<Dio> addStuff(Dio dio) async {
+  //   Directory tempDir = await getTemporaryDirectory();
+  //   String tempPath = tempDir.path;
+
+  //   var cookieJar = PersistCookieJar(
+  //       dir: tempPath, ignoreExpires: true, persistSession: true);
+
+  //   dio.interceptors.add(CookieManager(cookieJar));
+  // }
+
+  _getCookie() async {
+    //print(dio.);
+    // Directory tempDir = await getTemporaryDirectory();
+    // String tempPath = tempDir.path;
+    // var cookieJar = PersistCookieJar(
+    //     dir: tempPath, ignoreExpires: true, persistSession: true);
+  }
+
+  String url = "";
+  double progress = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    print("*****\n\n$buyCookie\n\n*******");
+    //  print(cookieJar
+    //       .loadForRequest(Uri.parse("https://register.techtatva.in/login")));
+  }
+
+  // CookieManager cookieManager =
+
+  // WebViewController webViewController;
+
+  @override
+  Widget build(BuildContext context) {
+    _getCookie();
+
+    // wv.InAppWebViewController inappWebView;
+
+    // wv.CookieManager cManager = wv.CookieManager.instance();
+
+    // try {
+    //   cManager.setCookie(
+    //     url: 'https://register.techtatva.in/buy?card=4',
+    //     name: 'connect.sid',
+    //     value: buyCookie,
+    //     isSecure: true,
+    //     domain: 'register.techtatva.in',
+    //   );
+    // } catch (e) {
+    //   print(e);
+    // }
+
+    // wv.InAppWebView webView = wv.InAppWebView(
+    //     initialOptions: wv.InAppWebViewWidgetOptions(
+    //         inAppWebViewOptions: wv.InAppWebViewOptions(
+    //   debuggingEnabled: true,
+    // )));
+
+    //wv.InAppWebViewController controller;
+
+    print(buyCookie);
+
+    return Scaffold(
+      appBar: _buildAppBar(),
+      key: _key,
+      drawer: revelsDrawer(context),
+      backgroundColor: Colors.black,
+      body: ListView(
+        children: <Widget>[
+          Container(
+            height: 250.0,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  height: 250.0,
+                  width: MediaQuery.of(context).size.width,
+                  child: CachedNetworkImage(
+                    placeholder: (context, url) => Container(
+                      height: 250.0,
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      child: Container(
+                        child: Image.asset("assets/ttlogo.png"),
+                      ),
+                    ),
+                    fadeInDuration: Duration(milliseconds: 100),
+                    fadeOutDuration: Duration(milliseconds: 100),
+                    imageUrl: homeImages[Random.secure().nextInt(10)],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                    alignment: Alignment.bottomLeft,
+                    padding: EdgeInsets.only(left: 24.0),
+                    height: 250.0,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: [0.1, 0.3, 0.7, 1.0],
+                        colors: [
+                          Colors.black.withOpacity(0),
+                          Colors.black.withOpacity(0),
+                          Colors.black.withOpacity(0.5),
+                          Colors.black.withOpacity(1.0),
+                        ],
+                      ),
+                    ),
+                    child: Container(
+                      height: 50.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Revels'20",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(fontSize: 24.0),
+                          ),
+                          Text(
+                            "Qainaat | A WORLD APART",
+                            style: TextStyle(color: Colors.white70),
+                          )
+                        ],
+                      ),
+                    )),
+                // Container(
+                //   width: 60,
+                //   height: 50,
+                //   color: Colors.red.withOpacity(0.1),
+                //   child: IconButton(
+                //       icon: Icon(
+                //         Icons.menu,
+                //         color: Colors.black,
+                //       ),
+                //       onPressed: () {
+                //         _key.currentState.openDrawer();
+                //       }),
+                // )
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(55.0, 2.0, 55.0, 18.0),
+            color: Colors.transparent,
+            height: 0.5,
+          ),
+          _buildHeaderContainer(
+              context,
+              'Categories',
+              'Curated just for you',
+              FontAwesomeIcons.shapes,
+              Color.fromRGBO(247, 176, 124, 1), // skin color
+              Color.fromRGBO(247, 176, 124, 1).withOpacity(0.125)),
+          _buildHeaderContainer(
+              context,
+              'Events',
+              'Filtered by genre!',
+              Icons.event,
+              Colors.deepPurpleAccent,
+              Colors.deepPurpleAccent.withOpacity(0.125)),
+          _buildHeaderContainer(
+              context,
+              'Proshow',
+              'Lorem Ipsum it proshow not ur mum',
+              FontAwesomeIcons.solidGrinHearts,
+              Colors.redAccent,
+              Colors.redAccent.withOpacity(0.125)),
+          _buildHeaderContainer(
+              context,
+              'Delegate Cards',
+              'Various cards for different events',
+              FontAwesomeIcons.creditCard,
+              Colors.greenAccent,
+              Colors.greenAccent.withOpacity(0.125)),
+          _buildHeaderContainer(
+              context,
+              'Sponsors',
+              'Our Proud Partners',
+              FontAwesomeIcons.handsHelping,
+              Colors.deepOrangeAccent,
+              Colors.deepOrangeAccent.withOpacity(0.125)),
+          _buildHeaderContainer(
+              context,
+              'Live Blog',
+              'Powered by MIT Post',
+              FontAwesomeIcons.userClock,
+              Colors.yellowAccent,
+              Colors.yellowAccent.withOpacity(0.125)),
+          Container(
+            padding: EdgeInsets.all(24.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                buildIconButton(
+                    FontAwesomeIcons.facebook,
+                    "https://twitter.com/mittechtatva",
+                    Color.fromRGBO(59, 89, 152, 1),
+                    Color.fromRGBO(59, 89, 152, 1).withOpacity(0.125)),
+                buildIconButton(
+                    FontAwesomeIcons.twitter,
+                    "https://twitter.com/mittechtatva",
+                    Color.fromRGBO(29, 161, 242, 1),
+                    Color.fromRGBO(29, 161, 242, 1).withOpacity(0.125)),
+                buildIconButton(
+                    FontAwesomeIcons.instagram,
+                    "https://twitter.com/mittechtatva",
+                    Colors.pinkAccent,
+                    Colors.pinkAccent.withOpacity(0.125)),
+                buildIconButton(
+                    FontAwesomeIcons.youtube,
+                    "https://twitter.com/mittechtatva",
+                    Color.fromRGBO(196, 48, 43, 1),
+                    Color.fromRGBO(196, 48, 43, 1).withOpacity(0.125)),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(30.0, 8.0, 30.0, 8.0),
+            color: Colors.blueAccent,
+            height: 0.5,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.all(24.0),
+            child: Text(
+              desc,
+              style: TextStyle(color: Colors.white70, fontSize: 18.0),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.fromLTRB(150, 20, 150, 30),
+              alignment: Alignment.center,
+              child: Image.asset("assets/logo_NEW_NEW.png")),
+          Container(
+            padding: EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Developed with  ",
+                  style: TextStyle(color: Colors.white70),
+                ),
+                Icon(
+                  FontAwesomeIcons.solidHeart,
+                  color: Color.fromRGBO(
+                      Random.secure().nextInt(255),
+                      Random.secure().nextInt(255),
+                      Random.secure().nextInt(255),
+                      1),
+                  size: 12.0,
+                ),
+                Text(
+                  "  by the App Dev Team",
+                  style: TextStyle(color: Colors.white70),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: 50,
+          ),
+          // Container(
+          //   width: 200.0,
+          //   height: MediaQuery.of(context).size.height * 2,
+          //   color: Colors.redAccent,
+          //   child: wv.InAppWebView(
+          //     initialUrl: "https://register.techtatva.in/buy?card=4",
+          //     initialOptions: wv.InAppWebViewWidgetOptions(
+          //         inAppWebViewOptions: wv.InAppWebViewOptions(
+          //       debuggingEnabled: true,
+          //     )),
+          //     onWebViewCreated: (wv.InAppWebViewController controller) {},
+          //     onLoadStart:
+          //         (wv.InAppWebViewController controller, String url) {},
+          //     onLoadStop: (wv.InAppWebViewController controller, String url) {},
+          //   ),
+          // )
+        ],
+      ),
+    );
+  }
+
+  Widget buildIconButton(icon, link, color, colorBG) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(50),
+      child: Container(
+        padding: EdgeInsets.all(4.0),
+        color: Colors.white,
+        child: IconButton(
+          icon: Icon(
+            icon,
+            color: color,
+            size: 32.0,
+          ),
+          onPressed: () {
+            _launchURL("https://www.facebook.com/MITtechtatva/");
+          },
+        ),
+      ),
+    );
+  }
+
+  _buildAppBar() {
+    return AppBar(
+      title: Text(
+        "Home",
+      ),
+      centerTitle: true,
+      backgroundColor: Colors.black,
+    );
+  }
+
+  _buildHeaderContainer(context, title, desc, icon, color, colorShade) {
+    return InkWell(
+      onTap: () {
+        if (title == "Categories")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return Categories();
+          }));
+        else if (title == "Delegate Cards")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return DelegateCard();
+          }));
+        else if (title == "Live Blog")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return LiveBlog();
+          }));
+        else if (title == "Proshow")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return Proshow();
+          }));
+        else if (title == "Sponsors")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return Sponsors();
+          }));
+        else if (title == "Events")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return Faq();
+          }));
+
+        for (var event in allEvents) {
+          print(event.visible);
+          print(event.name);
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: colorShade, borderRadius: BorderRadius.circular(50.0)),
+        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+        padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
+        //    color: Colors.blueAccent,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: 60.0,
+              width: 60.0,
+              child: CircleAvatar(
+                backgroundColor: Colors.white12,
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 28.0,
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.fromLTRB(12.0, 8.0, 0, 0),
+              width: 200.0,
+              height: 80.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(bottom: 6),
+                    width: 190.0,
+                    child: Text(
+                      title,
+                      style: TextStyle(fontSize: 24.0),
+                    ),
+                  ),
+                  Container(height: 0.5, width: 400.0, color: Colors.white70),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 6.0, 0, 2.0),
+                    alignment: Alignment.topLeft,
+                    height: 30.0,
+                    width: 190.0,
+                    child: Text(
+                      desc,
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  // _getUserObject(UserData user) async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   user = UserData(
+  //       id: int.parse(preferences.getString('userId')),
+  //       name: preferences.getString('userName'),
+  //       regNo: preferences.getString('userReg'),
+  //       mobilNumber: preferences.getString('userMob'),
+  //       emailId: preferences.getString('userEmail'),
+  //       qrCode: preferences.getString('userQR'),
+  //       collegeName: preferences.getString('userCollege'));
+
+  //   return user;
+  // }
+
+  Widget revelsDrawer(BuildContext context) {
+    // UserData user;
+    // if (isLoggedIn) {
+    //   user = _getUserObject(user);
+    // }
+
+    if (isLoggedIn == null) isLoggedIn = false;
+
+    Widget name = Container(
+        padding: EdgeInsets.all(0.0),
+        child: Text(
+          isLoggedIn ? user.name : "Not logged in?",
+          style: TextStyle(fontSize: 24),
+        ));
+    Widget email = Container(
+        padding: EdgeInsets.symmetric(horizontal: 2.0),
+        child: Text(
+          isLoggedIn
+              ? user.emailId
+              : "Please log in first in our user section.",
+          style: TextStyle(color: Colors.white70),
+        ));
+
+    return Drawer(
+      child: ListView(
+        children: <Widget>[
+          UserAccountsDrawerHeader(
+            accountName: name,
+            accountEmail: email,
+            currentAccountPicture: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/Revels20_logo.jpg'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.75), BlendMode.darken),
+                    alignment: Alignment.centerRight)),
+          ),
+          _buildListTile(context, "Featured Events", Icons.stars),
+          _buildListTile(context, "Sponsors", FontAwesomeIcons.solidHandshake),
+          Container(
+            height: 0.5,
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            color: Colors.blueAccent,
+          ),
+          _buildListTile(context, "Developers", FontAwesomeIcons.code),
+          _buildListTile(context, "Report a bug", Icons.bug_report),
+          _buildListTile(context, "Source Code", FontAwesomeIcons.gitAlt),
+        ],
+      ),
+    );
+  }
+
+  ListTile _buildListTile(context, name, icon) {
+    Color skinColor = Color.fromRGBO(247, 176, 124, 1);
+    return ListTile(
+      leading: Icon(icon, color: skinColor),
+      title: Text(name),
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+          return FeaturedEvents();
+        }));
+      },
+    );
+  }
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  // Container _buildHeaderContainer(
+  //     BuildContext context, String name, String image) {
+  //   return Container(
+  //     margin: EdgeInsets.symmetric(horizontal: 14.0),
+  //     child: Row(
+  //       children: <Widget>[
+  //         Container(
+  //           margin: EdgeInsets.only(left: 18.0),
+  //           height: 100.0,
+  //           width: 100.0,
+  //           color: Colors.red,
+  //           child: Image.asset('/assets/Categories.png'),
+  //           //child: Image.asset(image),
+  //         ),
+  //         Container(
+  //           height: 100.0,
+  //           width: 200.0,
+  //           alignment: Alignment.bottomCenter,
+  //           decoration: BoxDecoration(
+  //             color: Colors.blue,
+  //             borderRadius: BorderRadius.circular(18.0),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  String desc =
+      "The world as we know today is not what it used to be and is no more than a shadow cast in the dim blue lights from screens, barely a semblance to the lush green of the forests and icy blue of the mountain tops that it should have been. With every new day comes a report of yet another catastrophe and we find ourselves wondering, have we run out of time?\n\nHave we gone too far to turn back? And yet it is amidst disaster that another feeling arises, of hope, of a chance at rebuilding the world, a chance at making it a world apart.\n\nWith this hope in our hearts we present to you the theme for Revels '20, Qainaat : A world apart. Revels is a national level cultural and sports fest from Manipal Institute of Technology that aims to unite a crowd that is diverse in more ways than one. An arena for holistic learning and a chance to express thoughts and ideas through art, music , dance , drama , sports and numerous other events.";
+}
