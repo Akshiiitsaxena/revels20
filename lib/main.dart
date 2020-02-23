@@ -20,10 +20,14 @@ import 'package:revels20/pages/Maps.dart';
 import 'package:revels20/pages/Schedule.dart';
 import 'package:revels20/pages/Results.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uni_links/uni_links.dart';
+import 'package:flutter/services.dart' show PlatformException;
 
 void main() {
   runApp(MyApp());
 }
+
+int count = 0;
 
 List<String> favoriteEvents = [];
 
@@ -105,6 +109,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   PageController _pageController;
   int _page = 0;
+
+  String collname, initialLink;
+  bool inpassword = false;
+  bool passwordset = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   double navWidth;
@@ -195,58 +203,350 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  Future<Null> initUniLinks() async {
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      print('Got link');
+      initialLink = await getInitialLink();
+      // Parse the link and warn the user, if it is not correct,
+      // but keep in mind it could be `null`.
+      print("hello:");
+      count++;
+      print(initialLink);
+
+      if (count <= 1) setState(() {});
+
+      print('hello link');
+      print('state set!!');
+      // setState(() {
+      // });
+    } on PlatformException {
+      // Handle exception by warning the user their action did not succeed
+      // return?
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _pageController = new PageController();
 
     navWidth = MediaQuery.of(context).size.width;
 
-    return SafeArea(
-        key: _scaffoldKey,
-        child: Scaffold(
-            floatingActionButton: Transform.scale(
-              scale: 1,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute<Null>(builder: (BuildContext context) {
-                    return MyMap();
-                  }));
-                },
-                backgroundColor: Color.fromRGBO(247, 176, 124, 1),
-                child: Icon(
-                  Icons.map,
-                  size: 32,
-                ),
+    if (!passwordset) initUniLinks();
+    print(initialLink);
+
+    return initialLink == null
+        ? SafeArea(
+            key: _scaffoldKey,
+            child: Scaffold(
+              // floatingActionButton: Transform.scale(
+              //   scale: 1,
+              //   child: FloatingActionButton(
+              //     onPressed: () {
+              //       Navigator.of(context).push(
+              //           MaterialPageRoute<Null>(builder: (BuildContext context) {
+              //         return MyMap();
+              //       }));
+              //     },
+              //     backgroundColor: Color.fromRGBO(247, 176, 124, 1),
+              //     child: Icon(
+              //       Icons.map,
+              //       size: 32,
+              //     ),
+              //   ),
+              // // ),
+              // floatingActionButtonLocation:
+              //     FloatingActionButtonLocation.centerDocked,
+              body: PageView(
+                physics: NeverScrollableScrollPhysics(),
+                controller: _pageController,
+                onPageChanged: onPageChanged,
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  Home(),
+                  Schedule(),
+                  MyMap(),
+                  Results(),
+                  LoginPage()
+                ],
               ),
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            body: PageView(
-              physics: NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              onPageChanged: onPageChanged,
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[Home(), Schedule(), Results(), LoginPage()],
-            ),
-            bottomNavigationBar: BottomAppBar(
-              color: Colors.white.withOpacity(0.07),
-              shape: CircularNotchedRectangle(),
-              child: Container(
-                height: 60,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    buildTabIcon(0, "Home", Icons.home),
-                    buildTabIcon(1, "Schedule", Icons.schedule),
-                    buildTabIcon(2, "Results", Icons.assessment),
-                    buildTabIcon(3, "User", Icons.person),
-                  ],
-                ),
+              // bottomNavigationBar: BottomAppBar(
+              //   color: Colors.white.withOpacity(0.07),
+              //   shape: CircularNotchedRectangle(),
+              //   child: Container(
+              //     height: 60,
+              //     child: Row(
+              //       mainAxisSize: MainAxisSize.max,
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       crossAxisAlignment: CrossAxisAlignment.stretch,
+              //       children: <Widget>[
+              //         buildTabIcon(0, "Home", Icons.home),
+              //         buildTabIcon(1, "Schedule", Icons.schedule),
+              //         buildTabIcon(2, "Maps", Icons.map),
+              //         buildTabIcon(3, "Results", Icons.assessment),
+              //         buildTabIcon(4, "User", Icons.person),
+              //       ],
+              //     ),
+              //   ),
+              // )
+              bottomNavigationBar: BottomNavigationBar(
+                currentIndex: _page,
+                onTap: navigationTapped,
+                selectedItemColor: _page != 2
+                    ? Colors.blueAccent
+                    : Color.fromRGBO(247, 176, 124, 1),
+                items: [
+                  _buildBottomNavBarItem("Home", Icon(Icons.home)),
+                  _buildBottomNavBarItem("Schedule", Icon(Icons.schedule)),
+                  _buildBottomNavBarItem("Maps", Icon(Icons.map)),
+                  _buildBottomNavBarItem("Results", Icon(Icons.assessment)),
+                  _buildBottomNavBarItem("User", Icon(Icons.person))
+                ],
               ),
-            )));
+            ))
+        : Password();
+  }
+
+  bool _autovalidate1 = false;
+
+  final GlobalKey<FormState> _key1 = GlobalKey<FormState>();
+  @override
+  bool _passwordVisible = true;
+  bool _passwordVisible1 = true;
+  String password, password2;
+
+  String validatepassword(String value) {
+    if (password.length == 0) {
+      return "Password is Required";
+    } else if (password.length < 8) {
+      return "Minimum length is 8";
+    } else if (password != password2) return "Passwords do not match";
+
+    return null;
+  }
+
+  String validatepassword2(String value) {
+    if (password2.length == 0) {
+      return "Password is Required";
+    } else if (password2.length < 8) {
+      return "Minimum length is 8";
+    } else if (password != password2) return "Passwords do not match";
+
+    return null;
+  }
+
+  ScrollController sc = new ScrollController();
+
+  Widget Password() {
+    print('inside password scaffold');
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: ListView(
+        controller: sc,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            height: 200,
+            child: Image.asset(
+              'assets/Revels20_logo.png',
+              alignment: Alignment.topCenter,
+            ),
+          ),
+          Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
+              height: 400,
+              child: ListView(controller: sc, children: <Widget>[
+                Form(
+                  key: _key1,
+                  autovalidate: _autovalidate1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey[850],
+                    ),
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          child: TextFormField(
+                              validator: validatepassword,
+                              obscureText: _passwordVisible,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  hintStyle: TextStyle(
+                                    color: Colors.white70,
+                                  ),
+                                  hintText: 'Password',
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                        _passwordVisible
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                        color: _passwordVisible
+                                            ? Colors.white70
+                                            : Color.fromARGB(
+                                                255, 247, 176, 124)),
+                                    onPressed: () {
+                                      setState(() {
+                                        _passwordVisible ^= true;
+                                      });
+                                    },
+                                  )),
+                              onChanged: (String val) {
+                                password = val;
+                              }),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          child: TextFormField(
+                              validator: validatepassword2,
+                              obscureText: _passwordVisible1,
+                              style: TextStyle(color: Colors.white),
+                              decoration: InputDecoration(
+                                  hintStyle: TextStyle(
+                                    color: Colors.white70,
+                                  ),
+                                  hintText: 'Retype Password',
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _passwordVisible1
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: _passwordVisible1
+                                          ? Colors.white70
+                                          : Color.fromARGB(255, 247, 176, 124),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _passwordVisible1 ^= true;
+                                      });
+                                    },
+                                  )),
+                              onChanged: (String val) {
+                                password2 = val;
+                              }),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            'Minimum length 8 characters',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                        Container(
+                          child: FlatButton(
+                            splashColor: Color.fromARGB(255, 22, 159, 196),
+                            padding: EdgeInsets.only(
+                                left: 20, right: 20, top: 10, bottom: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: BorderSide(
+                                color: Color.fromARGB(255, 22, 159, 196),
+                                width: 2.5,
+                              ),
+                            ),
+                            child: Text(
+                              'Submit Password',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                            onPressed: () async {
+                              _autovalidate1 = true;
+                              setState(() {});
+                              if (_key1.currentState.validate()) {
+                                _key1.currentState.save();
+                                initUniLinks();
+                                var a = initialLink.split('=');
+                                print(a[1]);
+                                String token = a[1];
+                                print(token);
+                                var response = await dio.post(
+                                    "https://register.mitrevels.in/setPassword/",
+                                    data: {
+                                      "token": token,
+                                      "password": password,
+                                      "password2": password2,
+                                    });
+                                print(response.data['success']);
+                                if (response.data['success'] == true) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor: Colors.grey[900],
+                                        title: new Text("Success!",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        content: new Text(
+                                            "Password set successfully",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        actions: <Widget>[
+                                          new FlatButton(
+                                            child: new Text("OK",
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 247, 176, 124))),
+                                            onPressed: () {
+                                              passwordset = true;
+                                              initialLink = null;
+                                              Navigator.of(context).pop();
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        LoginPage()),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else if (response.data['success'] == false) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor: Colors.grey[900],
+                                        title: new Text(
+                                          "Invalid input",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        content: new Text(response.data['msg'],
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        actions: <Widget>[
+                                          new FlatButton(
+                                            child: new Text("Try Again",
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 247, 176, 124))),
+                                            onPressed: () {
+                                              //initUniLinks();
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ]))
+        ],
+      ),
+    );
   }
 
   Padding buildTabIcon(int page, String name, IconData icon) {
@@ -732,6 +1032,14 @@ class _MyHomePageState extends State<MyHomePage> {
   //       title: Text(title),
   //       icon: icon);
   // }
+}
+
+_buildBottomNavBarItem(String title, Icon icon) {
+  return BottomNavigationBarItem(
+      backgroundColor: Colors.black,
+      activeIcon: icon,
+      title: Text(title),
+      icon: icon);
 }
 
 List<ScheduleData> scheduleForDay(List<ScheduleData> allSchedule, String day) {

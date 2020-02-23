@@ -187,7 +187,7 @@ class _Sample2State extends State<Sample2> {
                                         Color.fromARGB(255, 22, 159, 196),
                                         baseColor: Colors.black,
                                         child: ImageIcon(
-                                          AssetImage('assets/Revels20_logo.jpg'),
+                                          AssetImage('assets/Revels20_logo.png'),
                                           size: 300.0,
                                         ))));
                           }

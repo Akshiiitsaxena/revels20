@@ -43,9 +43,9 @@ class _FaqState extends State<Faq> {
                           child: Center(
                               child: Text('FAQ',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontFamily: 'Poppins'))),
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                  ))),
                         )),
                     itemCount: list.length,
                     itemBuilder: (BuildContext context, index) {
@@ -72,10 +72,11 @@ class _FaqState extends State<Faq> {
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                             colors: [
-                                              Color.fromRGBO(
-                                                  247, 176, 124, 0.8),
                                               Color.fromRGBO(247, 176, 124, 0.8)
-                                                  .withOpacity(0.4),
+                                                  .withOpacity(0.75),
+                                              Color.fromRGBO(247, 176, 124, 0.8)
+                                                  .withOpacity(1)
+                                              // Colors.white
                                             ]),
                                         borderRadius: BorderRadius.only(
                                             topLeft: Radius.circular(10.0),
@@ -87,10 +88,10 @@ class _FaqState extends State<Faq> {
                                               list[index].question,
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                              fontSize: 17,
-                                              fontFamily: 'Poppins')),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontSize: 17,
+                                          )),
                                     ),
                                     Container(
                                       width: MediaQuery.of(context).size.width *
@@ -108,10 +109,10 @@ class _FaqState extends State<Faq> {
                                       padding: const EdgeInsets.all(15.0),
                                       child: Text(list[index].answer,
                                           style: TextStyle(
-                                              color:
-                                                  Colors.white.withOpacity(0.8),
-                                              fontSize: 15.0,
-                                              fontFamily: 'Poppins')),
+                                            color:
+                                                Colors.white,
+                                            fontSize: 15.0,
+                                          )),
                                     )
                                   ],
                                 )),

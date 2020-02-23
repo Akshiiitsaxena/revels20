@@ -268,10 +268,18 @@ class _HomeState extends State<Home> {
             ),
           ),
           Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.fromLTRB(150, 20, 150, 30),
-              alignment: Alignment.center,
-              child: Image.asset("assets/logo_NEW_NEW.png")),
+            width: MediaQuery.of(context).size.width,
+            height: 300,
+            padding: EdgeInsets.fromLTRB(150, 20, 150, 30),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/Revels20_logo.png'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.5), BlendMode.darken),
+                    alignment: Alignment.centerRight)),
+          ),
           Container(
             padding: EdgeInsets.all(12.0),
             child: Row(
@@ -283,11 +291,7 @@ class _HomeState extends State<Home> {
                 ),
                 Icon(
                   FontAwesomeIcons.solidHeart,
-                  color: Color.fromRGBO(
-                      Random.secure().nextInt(255),
-                      Random.secure().nextInt(255),
-                      Random.secure().nextInt(255),
-                      1),
+                  color: Color.fromRGBO(247, 176, 124, 1),
                   size: 12.0,
                 ),
                 Text(
@@ -496,7 +500,7 @@ class _HomeState extends State<Home> {
             ),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/Revels20_logo.jpg'),
+                    image: AssetImage('assets/Revels20_logo.png'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
                         Colors.black.withOpacity(0.75), BlendMode.darken),
@@ -504,6 +508,7 @@ class _HomeState extends State<Home> {
           ),
           _buildListTile(context, "Featured Events", Icons.stars),
           _buildListTile(context, "Sponsors", FontAwesomeIcons.solidHandshake),
+          _buildListTile(context, "FAQs", Icons.question_answer),
           Container(
             height: 0.5,
             margin: EdgeInsets.symmetric(horizontal: 20),
@@ -523,10 +528,16 @@ class _HomeState extends State<Home> {
       leading: Icon(icon, color: skinColor),
       title: Text(name),
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-          return FeaturedEvents();
-        }));
+        if (name == "Featured Events")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return FeaturedEvents();
+          }));
+        else if (name == "FAQs")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return Faq();
+          }));
       },
     );
   }

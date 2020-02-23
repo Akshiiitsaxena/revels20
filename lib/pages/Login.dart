@@ -1,21 +1,21 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:revels20/pages/Sponsors.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:revels20/main.dart';
-import 'dart:convert';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:revels20/models/UserModel.dart';
 import 'package:revels20/pages/RegisteredEvents.dart';
-import 'package:revels20/pages/SetPassword.dart';
+import 'package:revels20/pages/Sponsors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'Registration.dart';
-import 'package:flushbar/flushbar.dart';
 
 UserData user;
 
@@ -55,6 +55,8 @@ class _LoginPageState extends State<LoginPage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
+    Color skinColor = Color.fromRGBO(247, 176, 124, 1);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
@@ -66,24 +68,30 @@ class _LoginPageState extends State<LoginPage> {
           physics: NeverScrollableScrollPhysics(),
           children: <Widget>[
             Container(
-              //color: Colors.red,
-              margin: EdgeInsets.only(top: height * 0.07),
-              height: height * 0.17,
-              width: 150.0,
-              child: Image.asset("assets/Revels20_logo.jpg"),
-            ),
-            Container(
-              width: 1.0,
-              height: height * 0.12,
+              width: MediaQuery.of(context).size.width,
+              height: 200,
+              margin: EdgeInsets.fromLTRB(24.0, 24, 24, 0),
               alignment: Alignment.center,
-              child: Text(
-                "Welcome.",
-                style: TextStyle(
-                    fontSize: 35.0,
-                    foreground: Paint()..shader = linearGradient),
-              ),
-              //  color: Colors.red,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/Revels20_logo.png'),
+                      fit: BoxFit.contain,
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.0), BlendMode.darken),
+                      alignment: Alignment.center)),
             ),
+            // Container(
+            //   width: 1.0,
+            //   height: height * 0.12,
+            //   alignment: Alignment.center,
+            //   child: Text(
+            //     "Welcome.",
+            //     style: TextStyle(
+            //         fontSize: 35.0,
+            //         foreground: Paint()..shader = linearGradient),
+            //   ),
+            //   //  color: Colors.red,
+            // ),
             Container(
               child: Center(
                 child: Container(
@@ -129,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Container(
               //color: Colors.red,
-              height: height * 0.25,
+              height: height * 0.33,
               margin: EdgeInsets.symmetric(horizontal: 15.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,12 +150,10 @@ class _LoginPageState extends State<LoginPage> {
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
-                            stops: [0.1, 0.3, 0.7, 0.9],
+                            stops: [0.1, 0.9],
                             colors: [
-                              Colors.blueAccent.withOpacity(0.9),
-                              Colors.blueAccent.withOpacity(0.7),
-                              Colors.teal.withOpacity(0.8),
-                              Colors.teal.withOpacity(0.6),
+                              Colors.blueAccent.withOpacity(1),
+                              Colors.lightBlueAccent.withOpacity(1),
                             ],
                           ),
                           borderRadius: BorderRadius.circular(25.0)),
@@ -208,10 +214,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   FlatButton(
                       onPressed: () async {
-                        Navigator.of(context).push(MaterialPageRoute<Null>(
-                            builder: (BuildContext context) {
-                          return Sponsors();
-                        }));
                         if (_emailController.value.text.length == 0) {
                           Flushbar(
                             duration: Duration(seconds: 3),
@@ -249,8 +251,20 @@ class _LoginPageState extends State<LoginPage> {
                             ).show(context);
                           }
                         }
+                        var response = await dio.post(
+                            "https://register.mitrevels.in/forgotPassword/",
+                            data: {
+                              "email": _emailController.text.toString(),
+                              "type": "invisible",
+                              "g-recaptcha-response": "kr4Ju4ImZ7aPJoQLhepb",
+                            });
                       },
                       child: Text("Forgot Password?")),
+                  Container(
+                      child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(isVerifying
+                              ? Colors.lightBlueAccent
+                              : Colors.transparent)))
                 ],
               ),
             ),

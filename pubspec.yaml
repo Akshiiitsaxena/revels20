@@ -74,6 +74,7 @@ flutter:
     - Revels20_logo.jpg
     - destination_map_marker.png
     - driving_pin.png
+    - Revels20_logo.png
 
   fonts:
     - family: Product-Sans

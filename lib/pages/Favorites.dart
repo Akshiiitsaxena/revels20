@@ -59,10 +59,10 @@ class _FavoritesState extends State<Favorites> with TickerProviderStateMixin {
             bottom: TabBar(
               isScrollable: true,
               tabs: [
-                _buildTab("Day 1", "09-10-2019"),
-                _buildTab("Day 2", "10-10-2019"),
-                _buildTab("Day 3", "11-10-2019"),
-                _buildTab("Day 4", "12-10-2019"),
+                _buildTab("Day 1", "04-03-2020"),
+                _buildTab("Day 2", "05-03-2020"),
+                _buildTab("Day 3", "06-03-2020"),
+                _buildTab("Day 4", "07-03-2020"),
               ],
             ),
           ),

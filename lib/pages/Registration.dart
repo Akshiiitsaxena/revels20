@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:revels20/pages/Login.dart';
 import './AutoComplete.dart';
 //import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -11,8 +12,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 String collname, initialLink;
 bool inpassword = false;
-
-Dio dio = new Dio();
 
 class Registration extends StatefulWidget {
   @override
@@ -57,7 +56,7 @@ class _RegistrationState extends State<Registration> {
             Container(
               width: 200,
               height: 200,
-              child: Image.asset('assets/Revels20_logo.jpg'),
+              child: Image.asset('assets/Revels20_logo.png'),
               alignment: Alignment.topCenter,
             ),
             Form(
