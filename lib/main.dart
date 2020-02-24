@@ -45,7 +45,7 @@ _startUserCache() async {
     isLoggedIn = preferences.getBool('isLoggedIn') ?? false;
     print(isLoggedIn);
 
-    dio.options.baseUrl = "https://register.techtatva.in";
+    dio.options.baseUrl = "https://register.mitrevels.in";
     dio.options.connectTimeout = 500000000; //5s
     dio.options.receiveTimeout = 300000000;
 
@@ -494,12 +494,12 @@ class _MyHomePageState extends State<MyHomePage> {
                                               passwordset = true;
                                               initialLink = null;
                                               Navigator.of(context).pop();
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        LoginPage()),
-                                              );
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //       builder: (context) =>
+                                              //           LoginPage()),
+                                              // );
                                             },
                                           ),
                                         ],

@@ -116,7 +116,7 @@ class _HomeState extends State<Home> {
                       width: MediaQuery.of(context).size.width,
                       alignment: Alignment.center,
                       child: Container(
-                        child: Image.asset("assets/ttlogo.png"),
+                        child: Image.asset("assets/Revels20_logo.png"),
                       ),
                     ),
                     fadeInDuration: Duration(milliseconds: 100),
@@ -477,7 +477,7 @@ class _HomeState extends State<Home> {
     Widget name = Container(
         padding: EdgeInsets.all(0.0),
         child: Text(
-          isLoggedIn ? user.name : "Not logged in?",
+          isLoggedIn ? user.name ?? "null" : "Not logged in?",
           style: TextStyle(fontSize: 24),
         ));
     Widget email = Container(
@@ -537,6 +537,11 @@ class _HomeState extends State<Home> {
           Navigator.of(context)
               .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
             return Faq();
+          }));
+        else if (name == "Developers")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return Developers();
           }));
       },
     );

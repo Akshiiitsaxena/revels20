@@ -51,7 +51,7 @@ class _DelegateCardState extends State<DelegateCard> {
         ),
         Container(
           // color: Colors.red.withOpacity(0.2),
-          height: MediaQuery.of(context).size.height * 0.35,
+          height: 300,
           //width: MediaQuery.of(context),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

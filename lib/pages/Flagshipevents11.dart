@@ -24,14 +24,14 @@ class FeaturedState extends StatefulWidget {
 }
 
 List<String> flagStrings = [
-  "MIT Debate Tournament (Teams)",
+  "MITDT",
   "Groove",
   "Battle of Bands",
   "Desi Tadka",
   "Nukkad Natak",
   "Curtain Call",
-  "The Fashion Show",
-  "Mr. and Ms. Revels"
+  "Fashion Show",
+  "Mr. and Mrs. Revels"
 ];
 
 List<EventData> renderEvents = [];
@@ -182,7 +182,7 @@ class _LostFeatureState extends State<FeaturedState> {
           return Container(
             color: Color.fromARGB(255, 20, 20, 20),
             height: MediaQuery.of(context).size.height * 0.80,
-            child: ListView(
+            child: Column(
               children: [
                 Container(
                     color: Color.fromARGB(255, 20, 20, 20),
@@ -294,8 +294,8 @@ class _LostFeatureState extends State<FeaturedState> {
           myItems(Icons.message, "DESI TADKA", price: 22000),
           myItems(Icons.add, "NUKKAD NATAK", price: 33000),
           myItems(Icons.settings, "CURTAIN CALL", price: 30000),
-          myItems(Icons.face, "THE FASHION SHOW", price: 40000),
-          myItems(Icons.dashboard, "MR. AND MS. REVELS", price: 12000),
+          myItems(Icons.face, "FASHION SHOW", price: 40000),
+          myItems(Icons.dashboard, "MR. AND MRS. REVELS", price: 12000),
         ],
         staggeredTiles: [
           StaggeredTile.extent(2, 150.0),
@@ -388,7 +388,30 @@ Widget getDetails(context, EventData event, int price) {
             )),
           ),
         ),
-        
+        Column(
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(top: 30.0),
+              child: Text(
+                'Description:',
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 20.0),
+              height: 200,
+              width: MediaQuery.of(context).size.width / 1.2,
+              child: ListView(
+                children: <Widget>[
+                  Text(event.longDescription,
+                      style: TextStyle(color: Colors.white70, fontSize: 16.0),
+                      textAlign: TextAlign.center)
+                ],
+              ),
+            )
+          ],
+        ),
         Container(
             margin: const EdgeInsets.only(top: 10.0),
             width: MediaQuery.of(context).size.width / 1.2,
@@ -473,32 +496,7 @@ Widget getDetails(context, EventData event, int price) {
                   ),
                 ),
               ],
-            )
-          ),
-          Column(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(top: 30.0),
-              child: Text(
-                'Description:',
-                style: TextStyle(color: Colors.white, fontSize: 20.0),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 20.0),
-              height: 200,
-              width: MediaQuery.of(context).size.width / 1.2,
-              child: ListView(
-                children: <Widget>[
-                  Text(event.longDescription,
-                      style: TextStyle(color: Colors.white70, fontSize: 16.0),
-                      textAlign: TextAlign.center)
-                ],
-              ),
-            )
-          ],
-        ),
+            )),
       ],
     ),
   );

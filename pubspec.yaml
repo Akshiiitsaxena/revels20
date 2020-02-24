@@ -43,7 +43,7 @@ dependencies:
   stretchy_header: ^1.0.6
   flutter_staggered_grid_view: ^0.3.0
   flutter_staggered_animations: ^0.1.2
-
+  video_player: ^0.10.8+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -72,9 +72,13 @@ flutter:
     - logo_white.jpg
     - ttlogo.png
     - Revels20_logo.jpg
-    - destination_map_marker.png
-    - driving_pin.png
     - Revels20_logo.png
+    - logo.png
+    - hackerman2.png
+    - FoodMarker.png
+    - PopularMar.png
+    - ProshowMarker.png
+    - SportsMarker.png
 
   fonts:
     - family: Product-Sans

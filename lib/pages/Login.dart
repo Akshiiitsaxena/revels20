@@ -466,6 +466,8 @@ class _LoginPageState extends State<LoginPage> {
     var cookieJar = PersistCookieJar(
         dir: tempPath, ignoreExpires: true, persistSession: true);
 
+    print("eeeee");
+
     dio.interceptors.add(CookieManager(cookieJar));
     var resp = await dio.get("/logout");
 

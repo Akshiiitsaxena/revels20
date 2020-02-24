@@ -148,19 +148,17 @@ class _MyMapState extends State<MyMap> {
   void setIcons() async {
     print("InsideSetIcons \n");
     popularIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5), "assets/driving_pin.png");
+        ImageConfiguration(devicePixelRatio: 2.5), "assets/PopularMar.png");
 
     sportsIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        "assets/destination_map_marker.png");
+        ImageConfiguration(devicePixelRatio: 2.5), "assets/SportsMarker.png");
 
     proshowIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        "assets/destination_map_marker.png");
+        ImageConfiguration(devicePixelRatio: 2.5), "assets/ProshowMarker.png");
 
     foodIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
-        "assets/destination_map_marker.png");
+        "assets/FoodMarker.png");
   }
 
   _getIcon(String url) async {
