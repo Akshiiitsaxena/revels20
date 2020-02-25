@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
 
- //   print("*****\n\n$buyCookie\n\n*******");
+    //   print("*****\n\n$buyCookie\n\n*******");
     //  print(cookieJar
     //       .loadForRequest(Uri.parse("https://register.techtatva.in/login")));
   }
@@ -92,7 +92,7 @@ class _HomeState extends State<Home> {
 
     //wv.InAppWebViewController controller;
 
-  //  print(buyCookie);
+    //  print(buyCookie);
 
     return Scaffold(
       appBar: _buildAppBar(),
@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
                     ),
                     fadeInDuration: Duration(milliseconds: 100),
                     fadeOutDuration: Duration(milliseconds: 100),
-                    imageUrl: homeImages[Random.secure().nextInt(10)],
+                    imageUrl: images[Random.secure().nextInt(10)],
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -199,7 +199,7 @@ class _HomeState extends State<Home> {
           _buildHeaderContainer(
               context,
               'Proshow',
-              'Lorem Ipsum it proshow not ur mum',
+              'Amazing artist and their details!',
               FontAwesomeIcons.solidGrinHearts,
               Colors.redAccent,
               Colors.redAccent.withOpacity(0.125)),
@@ -212,9 +212,9 @@ class _HomeState extends State<Home> {
               Colors.greenAccent.withOpacity(0.125)),
           _buildHeaderContainer(
               context,
-              'Sponsors',
-              'Our Proud Partners',
-              FontAwesomeIcons.handsHelping,
+              'Featured Events',
+              'Win exciting prizes!',
+              Icons.monetization_on,
               Colors.deepOrangeAccent,
               Colors.deepOrangeAccent.withOpacity(0.125)),
           _buildMITPOSTHeader(context),
@@ -447,10 +447,10 @@ class _HomeState extends State<Home> {
               .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
             return Proshow();
           }));
-        else if (title == "Sponsors")
+        else if (title == "Featured Events")
           Navigator.of(context)
               .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-            return Sponsors();
+            return FeaturedEvents();
           }));
         else if (title == "Events")
           Navigator.of(context)
@@ -579,7 +579,6 @@ class _HomeState extends State<Home> {
                         Colors.black.withOpacity(0.75), BlendMode.darken),
                     alignment: Alignment.centerRight)),
           ),
-          _buildListTile(context, "Featured Events", Icons.stars),
           _buildListTile(context, "Sponsors", FontAwesomeIcons.solidHandshake),
           _buildListTile(context, "FAQs", Icons.question_answer),
           Container(
@@ -589,7 +588,6 @@ class _HomeState extends State<Home> {
           ),
           _buildListTile(context, "Developers", FontAwesomeIcons.code),
           _buildListTile(context, "Report a bug", Icons.bug_report),
-          _buildListTile(context, "Source Code", FontAwesomeIcons.gitAlt),
         ],
       ),
     );
@@ -601,10 +599,10 @@ class _HomeState extends State<Home> {
       leading: Icon(icon, color: skinColor),
       title: Text(name),
       onTap: () {
-        if (name == "Featured Events")
+        if (name == "Sponsors")
           Navigator.of(context)
               .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-            return FeaturedEvents();
+            return Sponsors();
           }));
         else if (name == "FAQs")
           Navigator.of(context)
@@ -616,6 +614,9 @@ class _HomeState extends State<Home> {
               .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
             return Developers();
           }));
+        else {
+          _launchURL("mailto:appdev.revels20@gmail.com?subject=BUGZZZ&body=");
+        }
       },
     );
   }

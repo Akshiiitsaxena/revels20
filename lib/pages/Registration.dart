@@ -25,7 +25,7 @@ class _RegistrationState extends State<Registration> {
   Widget login() {
     return Text(
       'Register',
-      style: TextStyle(color: Colors.white, fontSize: 20.0),
+      style: TextStyle(fontSize: 16.0, color: Colors.white),
     );
   }
 
@@ -44,241 +44,245 @@ class _RegistrationState extends State<Registration> {
 
   @override
   Widget build(BuildContext context) {
-    return /*(initialLink==null)?*/ MaterialApp(
-      theme: ThemeData(
-        accentColor: Colors.grey[900],
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        body: ListView(
-          children: <Widget>[
-            Container(
-              width: 200,
-              height: 200,
-              child: Image.asset('assets/Revels20_logo.png'),
-              alignment: Alignment.topCenter,
-            ),
-            Form(
-              key: _key,
-              autovalidate: _autovalidate,
-              child: Container(
-                margin: EdgeInsets.only(left: 10, right: 10),
-                padding: EdgeInsets.only(left: 0, right: 0, bottom: 20),
-                decoration: BoxDecoration(
-                  color: Colors.grey[900],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextFormField(
-                          validator: validatename,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white70),
-                            icon: Icon(
-                              Icons.person,
-                              color: Color.fromARGB(255, 247, 176, 124),
-                            ),
-                            hintText: 'Name',
-                          ),
-                          onChanged: (String val) {
-                            name = val;
-                          },
-                        )),
-                    Container(
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextFormField(
-                          validator: validateemail,
-                          keyboardType: TextInputType.emailAddress,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white70),
-                            icon: Icon(
-                              Icons.mail_outline,
-                              color: Color.fromARGB(255, 247, 176, 124),
-                            ),
-                            hintText: 'Email ID',
-                          ),
-                          onChanged: (String val) {
-                            email = val;
-                          },
-                        )),
-                    Container(
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextFormField(
-                          validator: validatephone,
-                          keyboardType: TextInputType.number,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white70),
-                            icon: Icon(
-                              Icons.phone,
-                              color: Color.fromARGB(255, 247, 176, 124),
-                            ),
-                            hintText: 'Phone',
-                          ),
-                          onChanged: (String val) {
-                            mobile = val;
-                          },
-                        )),
-                    FlatButton(
+    return /*(initialLink==null)?*/ Scaffold(
+      backgroundColor: Colors.black,
+      body: ListView(
+        children: <Widget>[
+          Container(
+            width: 200,
+            height: 200,
+            child: Image.asset('assets/Revels20_logo.png'),
+            alignment: Alignment.topCenter,
+          ),
+          Form(
+            key: _key,
+            autovalidate: _autovalidate,
+            child: Container(
+              margin: EdgeInsets.only(left: 10, right: 10),
+              padding: EdgeInsets.only(left: 0, right: 0, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
                       padding: EdgeInsets.all(15),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            child: Icon(
-                              Icons.school,
-                              color: Color.fromARGB(255, 247, 176, 124),
-                            ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextFormField(
+                        validator: validatename,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(color: Colors.white70),
+                          icon: Icon(
+                            Icons.person,
+                            color: Color.fromARGB(255, 247, 176, 124),
                           ),
-                          Padding(
-                              padding: EdgeInsets.all(0.0),
-                              child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  margin: EdgeInsets.only(left: 5, right: 5),
-                                  child: Container(
-                                      padding:
-                                          EdgeInsets.only(left: 15, right: 15),
-                                      child: Text(
-                                        collname == null
-                                            ? 'Search for your college'
-                                            : collname,
-                                        style: TextStyle(
-                                            color: Colors.white70,
-                                            fontStyle: FontStyle.normal,
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 16),
-                                        maxLines: 3,
-                                        overflow: TextOverflow.fade,
-                                      )))),
-                          Container(
-                            child: IconButton(
-                              icon: Icon(Icons.info_outline),
-                              color: Color.fromARGB(255, 247, 176, 124),
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        backgroundColor: Colors.grey[900],
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        content: new Text(
-                                            "Please search for your college. \nIf college not present, please contact Outstation Management at om.revels20@gmail.com or Call"),
-                                        actions: <Widget>[
-                                          new FlatButton(
-                                            child: Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  child: Icon(
-                                                    Icons.call,
-                                                    color: Color.fromARGB(
-                                                        255, 247, 176, 124),
-                                                    size: 18,
-                                                  ),
-                                                  margin:
-                                                      EdgeInsets.only(right: 5),
-                                                ),
-                                                Text(
-                                                  "Call",
-                                                  style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 247, 176, 124)),
-                                                )
-                                              ],
-                                            ),
-                                            onPressed: () {
-                                              _launchURL();
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          new FlatButton(
-                                            child: new Text(
-                                              "Back",
-                                              style: TextStyle(
+                          hintText: 'Name',
+                        ),
+                        onChanged: (String val) {
+                          name = val;
+                        },
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextFormField(
+                        validator: validateemail,
+                        keyboardType: TextInputType.emailAddress,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(color: Colors.white70),
+                          icon: Icon(
+                            Icons.mail_outline,
+                            color: Color.fromARGB(255, 247, 176, 124),
+                          ),
+                          hintText: 'Email ID',
+                        ),
+                        onChanged: (String val) {
+                          email = val;
+                        },
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextFormField(
+                        validator: validatephone,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(color: Colors.white70),
+                          icon: Icon(
+                            Icons.phone,
+                            color: Color.fromARGB(255, 247, 176, 124),
+                          ),
+                          hintText: 'Phone',
+                        ),
+                        onChanged: (String val) {
+                          mobile = val;
+                        },
+                      )),
+                  FlatButton(
+                    padding: EdgeInsets.all(15),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          child: Icon(
+                            Icons.school,
+                            color: Color.fromARGB(255, 247, 176, 124),
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.all(0.0),
+                            child: Container(
+                                width: MediaQuery.of(context).size.width * 0.6,
+                                margin: EdgeInsets.only(left: 5, right: 5),
+                                child: Container(
+                                    padding:
+                                        EdgeInsets.only(left: 15, right: 15),
+                                    child: Text(
+                                      collname == null
+                                          ? 'Search for your college'
+                                          : collname,
+                                      style: TextStyle(
+                                          color: Colors.white70,
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 16),
+                                      maxLines: 3,
+                                      overflow: TextOverflow.fade,
+                                    )))),
+                        Container(
+                          child: IconButton(
+                            icon: Icon(Icons.info_outline),
+                            color: Color.fromARGB(255, 247, 176, 124),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.grey[900],
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      content: new Text(
+                                          "Please search for your college. \nIf college not present, please contact Outstation Management at om.revels20@gmail.com or Call"),
+                                      actions: <Widget>[
+                                        new FlatButton(
+                                          child: Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: Icon(
+                                                  Icons.call,
                                                   color: Color.fromARGB(
-                                                      255, 247, 176, 124)),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
+                                                      255, 247, 176, 124),
+                                                  size: 18,
+                                                ),
+                                                margin:
+                                                    EdgeInsets.only(right: 5),
+                                              ),
+                                              Text(
+                                                "Call",
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 247, 176, 124)),
+                                              )
+                                            ],
                                           ),
-                                        ],
-                                      );
-                                    });
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                      onPressed: () {
-                        collname = null;
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AutoComplete()),
-                        ).then((_) {
-                          print(collname);
-                        });
-                      },
-                    ),
-                    Container(
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextFormField(
-                          validator: validateid,
-                          keyboardType: TextInputType.number,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintStyle: TextStyle(color: Colors.white70),
-                            icon: Icon(
-                              Icons.confirmation_number,
-                              color: Color.fromARGB(255, 247, 176, 124),
-                            ),
-                            hintText: 'Reg. No./Faculty ID',
+                                          onPressed: () {
+                                            _launchURL();
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        new FlatButton(
+                                          child: new Text(
+                                            "Back",
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 247, 176, 124)),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
                           ),
-                          onChanged: (String val) {
-                            id = val;
-                          },
-                        )),
-                    Center(
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 500),
-                        width: width1,
-                        height: 60,
-                        child: Container(
-                            child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                          color: Colors.blue,
-                          child: login(),
-                          onPressed: () {
-                            _sendToServer();
-                            setState(() {});
-                          },
-                        )),
-                      ),
+                        )
+                      ],
                     ),
-                  ],
-                ),
+                    onPressed: () {
+                      collname = null;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AutoComplete()),
+                      ).then((_) {
+                        print(collname);
+                      });
+                    },
+                  ),
+                  Container(
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextFormField(
+                        validator: validateid,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(color: Colors.white70),
+                          icon: Icon(
+                            Icons.confirmation_number,
+                            color: Color.fromARGB(255, 247, 176, 124),
+                          ),
+                          hintText: 'Reg. No./Faculty ID',
+                        ),
+                        onChanged: (String val) {
+                          id = val;
+                        },
+                      )),
+                  Center(
+                    child: AnimatedContainer(
+                      padding: EdgeInsets.only(top: 12.0),
+                      duration: Duration(milliseconds: 500),
+                      width: width1,
+                      height: 45,
+                      child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                stops: [0.1, 0.9],
+                                colors: [
+                                  Colors.blueAccent.withOpacity(0.8),
+                                  Colors.lightBlueAccent.withOpacity(1),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(30.0)),
+                          child: FlatButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            child: login(),
+                            onPressed: () {
+                              _sendToServer();
+                              setState(() {});
+                            },
+                          )),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ); /*:Password();*/
   }

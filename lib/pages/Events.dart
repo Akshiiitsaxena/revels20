@@ -577,6 +577,7 @@ _registerForEvent(event, context) async {
 
   if (response.statusCode == 200 && response.data['success'] == true) {
     print("object");
+    firebaseMessaging.subscribeToTopic('event-${event['id']}');
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -603,7 +604,7 @@ _registerForEvent(event, context) async {
         return AlertDialog(
           title: new Text("Oops!"),
           content: Text(
-              "It seems like you have already registered for ${event['id']}. Check your registered events in the User Section."),
+              "It seems like you have already registered for ${event['name']}. Check your registered events in the User Section."),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Okay"),
@@ -623,7 +624,7 @@ _registerForEvent(event, context) async {
         return AlertDialog(
           title: new Text("Oops!"),
           content: Text(
-              "It seems like you have not bought the Delegate Card required for ${event['id']}.\n"),
+              "It seems like you have not bought the Delegate Card required for ${event['name']}.\n"),
           actions: <Widget>[
             new FlatButton(
               child: new Text("Close"),

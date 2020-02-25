@@ -390,6 +390,7 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
                 style: TextStyle(fontSize: 16.0, color: Colors.white54),
               ),
               onTap: () {
+                _launchURL("tel://$contact");
                 // inten.Intent()
                 //   ..setAction(act.Action.ACTION_VIEW)
                 //   ..setData(Uri(scheme: "tel", path: contact))
@@ -548,6 +549,7 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
 
     if (response.statusCode == 200 && response.data['success'] == true) {
       print("object");
+      firebaseMessaging.subscribeToTopic('event-${eventId}');
       showDialog(
         context: context,
         builder: (BuildContext context) {

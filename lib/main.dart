@@ -23,6 +23,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:flutter/services.dart' show PlatformException;
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -107,6 +109,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+FirebaseMessaging firebaseMessaging = new FirebaseMessaging();
+
 class _MyHomePageState extends State<MyHomePage> {
   PageController _pageController;
   int _page = 0;
@@ -128,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
     loadEvents();
     loadResults();
     loadDelCards();
+    firebaseCloudMessaging_Listeners();
   }
 
   _startupCache() async {
@@ -137,6 +142,35 @@ class _MyHomePageState extends State<MyHomePage> {
     _cacheEvents();
     _cacheResults();
     _cacheDelCards();
+  }
+
+  void firebaseCloudMessaging_Listeners() {
+    if (Platform.isIOS) iOS_Permission();
+
+    firebaseMessaging.getToken().then((token) {
+      print(token);
+    });
+
+    firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('on message $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('on resume $message');
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
+    );
+  }
+
+  void iOS_Permission() {
+    firebaseMessaging.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true));
+    firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
   }
 
   void _cacheDelCards() async {

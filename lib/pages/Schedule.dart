@@ -604,6 +604,7 @@ class _ScheduleState extends State<Schedule>
 
     if (response.statusCode == 200 && response.data['success'] == true) {
       print("object");
+      firebaseMessaging.subscribeToTopic('event-$eventId');
       showDialog(
         context: context,
         builder: (BuildContext context) {

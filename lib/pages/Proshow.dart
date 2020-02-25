@@ -1,10 +1,18 @@
+import 'dart:io';
+
+import 'package:cookie_jar/cookie_jar.dart' as cm;
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-
 import 'dart:math' as math;
 import 'package:flutter/gestures.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:revels20/main.dart';
+import 'package:revels20/pages/DelegateCards.dart';
+import 'package:revels20/pages/Login.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stretchy_header/stretchy_header.dart';
 
@@ -14,15 +22,20 @@ class Proshow extends StatefulWidget {
 }
 
 class _ProshowState extends State<Proshow> {
+  bool hasBought = false;
   Future<Map> futureArtists;
   Map artistInMap = {};
   List artistList = [];
+  Map content;
   Future<Map> fetchProshowArtist() async {
     final response =
         await http.get('https://appdev.mitrevels.in/proshow/android');
-
+    content = json.decode(response.body);
+    setState(() {
+      booltag = true;
+    });
     if (response.statusCode == 200) {
-      return (json.decode(response.body));
+      return (content);
     } else {
       throw Exception('Failed to load ProshowArtist');
     }
@@ -31,9 +44,9 @@ class _ProshowState extends State<Proshow> {
   bool booltag;
   @override
   void initState() {
+    booltag = false;
     super.initState();
     futureArtists = fetchProshowArtist();
-    booltag = true;
   }
 
   var currentPage = imagesArtist.length - 1.0;
@@ -44,98 +57,190 @@ class _ProshowState extends State<Proshow> {
     controller.addListener(() {
       setState(() {
         currentPage = controller.page;
+        print(currentPage);
       });
     });
 
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [
-            //  Colors.grey.withOpacity(0.1),
-            Colors.black,
-            Colors.black,
-            Colors.black,
-            Colors.black,
-            //  Colors.grey.withOpacity(0.1),
-          ],
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              tileMode: TileMode.clamp)),
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        resizeToAvoidBottomPadding: true,
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text(
-            'Proshow',
-            style: TextStyle(color: Colors.white),
-          ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          elevation: 10.0,
-        ),
-        body: Column(
-          children: <Widget>[
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: 15.0,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [
+              //  Colors.grey.withOpacity(0.1),
+              Colors.black,
+              Colors.black,
+              Colors.black,
+              Colors.black,
+              //  Colors.grey.withOpacity(0.1),
+            ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                tileMode: TileMode.clamp)),
+        child: (booltag == true)
+            ? Scaffold(
+                resizeToAvoidBottomInset: true,
+                resizeToAvoidBottomPadding: true,
+                backgroundColor: Colors.transparent,
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  title: Text(
+                    'Proshow',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  ),
-                  Stack(
-                    children: <Widget>[
-                      CardScrollWidget(
-                          currentPage, imagesArtist, futureArtists),
-                      Positioned.fill(
-                        child: PageView.builder(
-                          itemCount: 6,
-                          controller: controller,
-                          reverse: true,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                                onTap: () {
-                                  _newTaskModalBottomSheet(
-                                      context, index, futureArtists);
+                  centerTitle: true,
+                  automaticallyImplyLeading: false,
+                  elevation: 10.0,
+                ),
+                body: Column(
+                  children: <Widget>[
+                    SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                          ),
+                          Stack(
+                            children: <Widget>[
+                              CardScrollWidget(
+                                  currentPage, imagesArtist, futureArtists),
+                              Positioned.fill(
+                                child: PageView.builder(
+                                  itemCount: 6,
+                                  controller: controller,
+                                  reverse: true,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                        onTap: () {
+                                          _newTaskModalBottomSheet(
+                                              context, index, futureArtists);
+                                        },
+                                        child: Container(
+                                            color: Colors.transparent));
+                                  },
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                bottomNavigationBar: (content["sales"] == true)
+                    ? (4 > currentPage)
+                        ? Container(
+                            width: MediaQuery.of(context).size.width * 0.95,
+                            child: SliderButton(
+                                backgroundColor: Colors.black,
+                                //buttonColor: Color.fromRGBO(44, 183, 233, 1),
+                                buttonColor: Colors.green,
+                                radius: 10.0,
+                                buttonSize: 80.0,
+                                width: MediaQuery.of(context).size.width,
+                                height: (currentPage > 3 && currentPage < 4)
+                                    ? (1 -
+                                            (currentPage -
+                                                currentPage.toInt())) *
+                                        50.0
+                                    : 50.0,
+                                alignLabel: Alignment.centerRight,
+                                dismissible: false,
+                                action: () {
+                                  // print('Tapped'); //TODO Proshow payment
+                                  // setState(() {
+
+                                  //   //booltag = !booltag;
+                                  // });
+                                  !isLoggedIn
+                                      ? showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: new Text("Oops!"),
+                                              content: Text(
+                                                  "It seems like you are not logged in, please login first in our user section."),
+                                              actions: <Widget>[
+                                                new FlatButton(
+                                                  child: new Text("Close"),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        )
+                                      : Navigator.of(context).push(
+                                          MaterialPageRoute<Null>(
+                                              builder: (BuildContext context) {
+                                          return BuyCard(58); //proshow card ID
+                                        })).then((value) {
+                                          _checkBoughtCards();
+                                          if (hasBought)
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: new Text(
+                                                      "Congratulation!"),
+                                                  content: Text(
+                                                      "You have successfully purchased your proshow pass!"),
+                                                  actions: <Widget>[
+                                                    new FlatButton(
+                                                      child: new Text("Close"),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          setState(() {});
+                                        });
                                 },
-                                child: Container(color: Colors.transparent));
-                          },
-                        ),
-                      )
-                    ],
+                                label: Text("Swipe to Buy Proshow Pass",
+                                    style: TextStyle(
+                                        color: Colors.red.withOpacity(1))),
+                                icon: Text('Buy Now\t➤',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18))))
+                        : SizedBox(
+                            height: 50.0,
+                          )
+                    : SizedBox(
+                        height: 50.0,
+                      ),
+              )
+            : Scaffold(
+                resizeToAvoidBottomInset: true,
+                resizeToAvoidBottomPadding: true,
+                backgroundColor: Colors.transparent,
+                appBar: AppBar(
+                  backgroundColor: Colors.black,
+                  title: Text(
+                    'Proshow',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: Container(
-            width: MediaQuery.of(context).size.width * 0.95,
-            child: SliderButton(
-                backgroundColor: Colors.black,
-                //buttonColor: Color.fromRGBO(44, 183, 233, 1),
-                buttonColor: Colors.green,
-                radius: 10.0,
-                buttonSize: 80.0,
-                width: MediaQuery.of(context).size.width,
-                height: 50.0,
-                alignLabel: Alignment.centerRight,
-                dismissible: false,
-                action: () {
-                  print('Tapped'); //TODO Proshow payment
-                  setState(() {
-                    booltag = !booltag;
-                  });
-                },
-                label: Text("Swipe Right to Pay",
-                    style: TextStyle(color: Colors.red.withOpacity(1))),
-                icon: Text('Buy Now\t➤',
-                    style: TextStyle(color: Colors.white, fontSize: 18)))),
-      ),
-    );
+                  centerTitle: true,
+                  automaticallyImplyLeading: false,
+                  elevation: 10.0,
+                ),
+                body: Container(
+                  child: Center(
+                    child: SizedBox(
+                      height: 50.0,
+                      width: 50.0,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+              ));
   }
 
   void _newTaskModalBottomSheet(context, artistIndex, futureArtists) {
@@ -151,7 +256,7 @@ class _ProshowState extends State<Proshow> {
               future: futureArtists,
               builder: (context, snapshot) {
                 var artistI = fixIndex(artistIndex);
-                Map content = snapshot.data;
+                content = snapshot.data;
                 if (snapshot.hasData) {
                   return Scaffold(
                     backgroundColor: Colors.black,
@@ -200,7 +305,7 @@ class _ProshowState extends State<Proshow> {
                                 children: <Widget>[
                                   Text(
                                     "${getDate(artistIndex + 1)}",
-                                    style: TextStyle(color: Color.fromRGBO(247, 176, 124, 1),fontSize: 20.0),
+                                    style: headStyle(20),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -210,7 +315,7 @@ class _ProshowState extends State<Proshow> {
                                   Text(
                                     content['data']["${artistIndex + 1}"]
                                         ['time'],
-                                    style: TextStyle(color: Color.fromRGBO(247, 176, 124, 1),fontSize: 20.0),
+                                    style: headStyle(20),
                                   )
                                 ],
                               ),
@@ -307,6 +412,52 @@ class _ProshowState extends State<Proshow> {
                     child: Center(child: CircularProgressIndicator()));
               });
         });
+  }
+
+  _checkBoughtCards() async {
+    List<int> boughtCardsID = await _fetchBoughtCards();
+
+    for (var i in boughtCardsID) {
+      if (i == 58) {
+        hasBought = true;
+      }
+    }
+  }
+
+  _fetchBoughtCards() async {
+    List<int> cards = [];
+
+    var jsonData;
+
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+
+    var cookieJar = PersistCookieJar(
+        dir: tempPath, ignoreExpires: true, persistSession: true);
+
+    print("eeeee");
+
+    dio.interceptors.add(CookieManager(cookieJar));
+    var resp = await dio.get("/boughtCards");
+
+    if (resp.statusCode == 200) {
+      jsonData = resp.data;
+
+      try {
+        for (var json in jsonData['data']) {
+          try {
+            var temp = json['card_type'];
+            cards.add(temp);
+          } catch (e) {
+            print(e);
+          }
+        }
+      } catch (e) {
+        return cards.toSet().toList();
+      }
+    }
+
+    return cards.toSet().toList();
   }
 
   TextStyle headStyle(double fs) {
@@ -415,39 +566,6 @@ class CardScrollWidget extends StatelessWidget {
                                         ['vertical_image_url'],
                                     fit: BoxFit.cover,
                                   )),
-                              // Align(
-                              //   alignment: Alignment.bottomLeft,
-                              //   child: Column(
-                              //     mainAxisSize: MainAxisSize.min,
-                              //     crossAxisAlignment: CrossAxisAlignment.start,
-                              //     children: <Widget>[
-                              //       Padding(
-                              //         padding: EdgeInsets.symmetric(
-                              //             horizontal: 16.0, vertical: 8.0),
-                              //       ),
-                              //       SizedBox(
-                              //         height: 10.0,
-                              //       ),
-                              //       Padding(
-                              //         padding: const EdgeInsets.only(
-                              //             left: 12.0, bottom: 12.0),
-                              //         child: Container(
-                              //           padding: EdgeInsets.symmetric(
-                              //               horizontal: 22.0, vertical: 6.0),
-                              //           decoration: BoxDecoration(
-                              //               color:
-                              //                   Color.fromRGBO(14, 17, 17, 0.5),
-                              //               borderRadius:
-                              //                   BorderRadius.circular(20.0)),
-                              //           child: Text("Day " + "${getDay(j)}",
-                              //               style: TextStyle(
-                              //                   color: Colors.white,
-                              //                   fontSize: 14.0)),
-                              //         ),
-                              //       )
-                              //     ],
-                              //   ),
-                              // )
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Container(
@@ -475,18 +593,46 @@ class CardScrollWidget extends StatelessWidget {
                                     SizedBox(
                                       height: 10.0,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 0),
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
-                                        child: Text("Day " + "${getDay(j)}",
-                                            style: TextStyle(
-                                              color: Colors.white
-                                                  .withOpacity(0.75),
-                                              fontSize: 32.0,
-                                            )),
-                                      ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 0),
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 10, horizontal: 20),
+                                            child: Text("Day " + "${getDay(j)}",
+                                                style: TextStyle(
+                                                    color: Colors.white
+                                                        .withOpacity(0.75),
+                                                    fontSize: 32.0,
+                                                    fontWeight: (getDay(j) < 3)
+                                                        ? FontWeight.normal
+                                                        : FontWeight.bold)),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 0),
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5, horizontal: 15),
+                                            child: Text(
+                                                (getDay(j) < 3)
+                                                    ? "Free"
+                                                    : "Paid",
+                                                style: TextStyle(
+                                                    color: Colors.white
+                                                        .withOpacity(0.6),
+                                                    fontSize: 20.0,
+                                                    fontWeight: (getDay(j) > 2)
+                                                        ? FontWeight.bold
+                                                        : FontWeight.normal)),
+                                          ),
+                                        )
+                                      ],
                                     )
                                   ],
                                 ),

@@ -8,7 +8,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="revels20"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/asset">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -28,6 +28,10 @@
                     android:scheme="https"
                     android:host="register.mitrevels.in" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
@@ -37,5 +41,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="io.flutter.embedding.android.SplashScreenDrawable"
+            android:resource="@drawable/my_splash" />
     </application>
 </manifest>

@@ -480,8 +480,7 @@ class _ResultsState extends State<Results> with TickerProviderStateMixin {
                 filterSearchResults(value);
               },
             ),
-            duration: Duration(milliseconds: 200),
-
+            duration: Duration(milliseconds: 400),
             width: width,
             //height: width,
           ),

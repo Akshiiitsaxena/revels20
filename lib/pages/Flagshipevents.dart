@@ -1,10 +1,18 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:revels20/models/ScheduleModel.dart';
+import 'package:revels20/pages/Login.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:revels20/models/EventModel.dart';
 import '../main.dart';
+
+Color skn = Color.fromRGBO(247, 176, 124, 1);
 
 class FeaturedEvents extends StatelessWidget {
   @override
@@ -110,7 +118,7 @@ class _LostFeatureState extends State<FeaturedState> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              color: Colors.grey[850],
+              color: Colors.white10,
             ),
             height: 200.0,
             child: Center(
@@ -125,7 +133,8 @@ class _LostFeatureState extends State<FeaturedState> {
                           Container(
                             //  borderRadius: BorderRadius.circular(50.0),
                             decoration: BoxDecoration(
-                                border: Border.all(color: Colors.blueAccent),
+                                border: Border.all(
+                                    color: Color.fromRGBO(247, 176, 124, 1)),
                                 borderRadius: BorderRadius.circular(50)),
                             child: Padding(
                                 padding: const EdgeInsets.all(14.0),
@@ -133,7 +142,8 @@ class _LostFeatureState extends State<FeaturedState> {
                                     direction: ShimmerDirection.ttb,
                                     period: Duration(seconds: 2),
                                     baseColor: Colors.black,
-                                    highlightColor: Colors.white,
+                                    highlightColor:
+                                        Color.fromRGBO(247, 176, 124, 1),
                                     child: Icon(
                                       icon,
                                       color: Colors.redAccent,
@@ -145,7 +155,7 @@ class _LostFeatureState extends State<FeaturedState> {
                             child: Text(
                               heading,
                               style: TextStyle(
-                                color: Colors.blueAccent,
+                                color: Color.fromRGBO(247, 176, 124, 1),
                                 fontSize: 15.0,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -183,7 +193,7 @@ class _LostFeatureState extends State<FeaturedState> {
           return Container(
             color: Color.fromARGB(255, 20, 20, 20),
             height: MediaQuery.of(context).size.height * 0.80,
-            child: ListView(
+            child: Column(
               children: [
                 Container(
                     color: Color.fromARGB(255, 20, 20, 20),
@@ -196,21 +206,21 @@ class _LostFeatureState extends State<FeaturedState> {
                           child: Text(event.name,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 22.0, color: Colors.white)),
+                                  fontSize: 24.0, color: Colors.white)),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.5,
+                          width: MediaQuery.of(context).size.width * 0.75,
                           child: Divider(
-                            color: Color.fromARGB(255, 22, 159, 196),
-                            thickness: 3.0,
+                            color: skn,
+                            thickness: 1.0,
                           ),
                         ),
                         Container(
-                          height: 20,
+                          //height: 20,
                           child: Text(getcategoryname(event.categoryId),
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 16.0, color: Colors.white)),
+                                  fontSize: 16.0, color: Colors.white70)),
                         ),
                       ],
                     )),
@@ -344,47 +354,95 @@ String getdelegatecard(int delid) {
 Widget getDetails(context, EventData event, int price) {
   return Container(
     width: MediaQuery.of(context).size.width,
+    height: MediaQuery.of(context).size.height * 0.6,
     color: Color.fromARGB(255, 20, 20, 20),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
+    child: ListView(
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Shimmer.fromColors(
-          child: Text(
-            "₹ $price",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
+        Container(
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.center,
+          padding: EdgeInsets.all(24.0),
+//          height: MediaQuery.of(context).size.height,
+          child: Shimmer.fromColors(
+            child: Text(
+              "₹ $price",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+              ),
             ),
+            baseColor: Color.fromRGBO(212, 175, 55, 1),
+            highlightColor: Colors.brown,
           ),
-          baseColor: Color.fromRGBO(212, 175, 55, 1),
-          highlightColor: Colors.brown,
         ),
         Container(
-          margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-          child: Text(
-            'Delegate Card : ' + getdelegatecard(event.delCardType),
-            style: TextStyle(color: Colors.white, fontSize: 20.0),
-            textAlign: TextAlign.center,
-          ),
-          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.symmetric(horizontal: 15.0),
+          child: getCanRegister(event.id) == 1
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        stops: [0.1, 0.9],
+                        colors: [
+                          skn.withOpacity(0.8),
+                          skn.withOpacity(1),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(4.0)),
+                  height: MediaQuery.of(context).size.height * 0.055,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: MaterialButton(
+                    onPressed: () {
+                      !isLoggedIn
+                          ? showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: new Text("Oops!"),
+                                  content: Text(
+                                      "It seems like you are not logged in, please login first in our user section."),
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                      child: new Text("Close"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            )
+                          : _registerForEvent(event.id, context);
+                    },
+                    child: Container(
+                      width: 300.0,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Register Now",
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                )
+              : Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Registerations for this event are closed.",
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                ),
         ),
-        Center(
-          child: Container(
-            width: 260,
-            height: 50,
-            child: Container(
-                child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-              ),
-              color: Color.fromARGB(255, 22, 159, 196),
-              child: Text(
-                'Register',
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-              onPressed: () {},
-            )),
+        Container(
+          margin: const EdgeInsets.only(top: 16.0, bottom: 10.0),
+          child: Text(
+            '(Delegate Card : ${getdelegatecard(event.delCardType)})',
+            style: TextStyle(color: Colors.white70, fontSize: 18.0),
+            textAlign: TextAlign.center,
           ),
         ),
         Container(
@@ -410,11 +468,9 @@ Widget getDetails(context, EventData event, int price) {
                               width:
                                   30.0 * event.minTeamSize / event.minTeamSize,
                               decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color.fromARGB(255, 22, 159, 196),
-                                ),
+                                border: Border.all(color: skn, width: 2),
                                 shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 22, 159, 196),
+                                // color: Color.fromARGB(255, 22, 159, 196),
                               )),
                           Container(
                               height:
@@ -431,33 +487,30 @@ Widget getDetails(context, EventData event, int price) {
                         ],
                       ),
                       Container(
-                        width: 30.0,
-                        height: 5.0,
+                        width: 60.0,
+                        height: 2.0,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(5.0)),
                           shape: BoxShape.rectangle,
-                          color: Color.fromARGB(255, 22, 159, 196),
+                          color: skn,
                         ),
                       ),
                       Stack(
                         children: <Widget>[
                           Container(
                               height: 30.0 +
-                                  (5 * event.maxTeamSize / event.maxTeamSize),
+                                  (5 * event.maxTeamSize / event.minTeamSize),
                               width: 30.0 +
-                                  (5 * event.maxTeamSize / event.maxTeamSize),
+                                  (5 * event.maxTeamSize / event.minTeamSize),
                               decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Color.fromARGB(255, 22, 159, 196),
-                                ),
+                                border: Border.all(color: skn, width: 2),
                                 shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 22, 159, 196),
                               )),
                           Container(
                               height: 30.0 +
-                                  (5 * event.maxTeamSize / event.maxTeamSize),
+                                  (5 * event.maxTeamSize / event.minTeamSize),
                               width: 30.0 +
-                                  (5 * event.maxTeamSize / event.maxTeamSize),
+                                  (5 * event.maxTeamSize / event.minTeamSize),
                               child: Center(
                                 child: Text(event.maxTeamSize.toString(),
                                     style: TextStyle(
@@ -483,20 +536,170 @@ Widget getDetails(context, EventData event, int price) {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 20.0),
-              height: 200,
-              width: MediaQuery.of(context).size.width / 1.2,
-              child: ListView(
-                children: <Widget>[
-                  Text(event.longDescription,
-                      style: TextStyle(color: Colors.white70, fontSize: 16.0),
-                      textAlign: TextAlign.center)
-                ],
-              ),
-            )
+                margin: const EdgeInsets.only(top: 20.0),
+                height: 200,
+                width: MediaQuery.of(context).size.width / 1.2,
+                child: Text(
+                    event.longDescription.length == 0
+                        ? event.shortDescription
+                        : event.longDescription,
+                    style: TextStyle(color: Colors.white70, fontSize: 16.0),
+                    textAlign: TextAlign.center))
           ],
         ),
       ],
     ),
   );
+}
+
+getCanRegister(int id) {
+  print(allEvents.length);
+
+  for (var event in allEvents) {
+    print(event.canRegister);
+    if (event.id == id) {
+      return event.canRegister;
+    }
+  }
+}
+
+_registerForEvent(int eventId, context) async {
+  print("tapped");
+  print(eventId);
+
+  Directory tempDir = await getTemporaryDirectory();
+  String tempPath = tempDir.path;
+
+  var cookieJar = PersistCookieJar(
+      dir: tempPath, ignoreExpires: true, persistSession: true);
+
+  dio.interceptors.add(CookieManager(cookieJar));
+  var response = await dio.post("/createteam", data: {"eventid": eventId});
+
+  print(response.statusCode);
+  print(response.data);
+
+  if (response.statusCode == 200 && response.data['success'] == true) {
+    print("object");
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Success!"),
+          content: Text(
+              "You have successfully registered for ${getEventNameFromID(eventId)}. Your team ID is ${response.data['data']}"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } else if (response.statusCode == 200 &&
+      response.data['msg'] == "User already registered for event") {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Oops!"),
+          content: Text(
+              "It seems like you have already registered for ${getEventNameFromID(eventId)}. Check your registered events in the User Section."),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Okay"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } else if (response.statusCode == 200 &&
+      response.data['msg'] == "Card for event not bought") {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Oops!"),
+          content: Text(
+              "It seems like you have not bought the Delegate Card required for ${getEventNameFromID(eventId)}.\n\nPlease head over to our Delegate Card section and purchase the ${getCardFromEventId(eventId)} card."),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  } else {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Oops!"),
+          content: Text(
+              "Whoopsie there seems to be some error. Please check your connecting and try"),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(""),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+getCardFromEventId(int id) {
+  EventData temp;
+
+  for (var event in allEvents) {
+    if (event.id == id) {
+      temp = event;
+    }
+  }
+
+  for (var card in allCards) {
+    if (temp.delCardType == card.id) {
+      return card.name;
+    }
+  }
+}
+
+getEventNameFromID(int id) {
+  print(allEvents.length);
+
+  for (var event in allEvents) {
+    if (id == event.id) return event.name;
+  }
+}
+
+getDelCardNameFromEventID(int eventId) {
+  int delId;
+  for (var event in allEvents) {
+    if (event.id == eventId) delId = event.delCardType;
+  }
+
+  for (var card in allCards) {
+    if (card.id == delId) return card.name;
+  }
+}
+
+getEventDescription(ScheduleData scheduleData) {
+  for (var i in allEvents) {
+    if (i.id == scheduleData.eventId) {
+      return i.longDescription;
+    }
+  }
 }

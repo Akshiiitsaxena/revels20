@@ -59,7 +59,7 @@ class _DevPageState extends State<DevPage> {
     developers.add(DeveloperModel(
         name: 'Naman',
         image:
-            'https://res.cloudinary.com/nxmxnjxxn/image/upload/v1569992349/naman.jpg',
+            'https://i.ibb.co/3smxM9H/3ca88642-d267-4d7a-b501-68cab846e839.jpg',
         platform: 'IOS',
         ccOrOrganizer: 'Category Head',
         quote: '"Manners Maketh Man"',
@@ -71,7 +71,8 @@ class _DevPageState extends State<DevPage> {
             'https://res.cloudinary.com/nxmxnjxxn/image/upload/v1569992349/akshit.jpg',
         platform: 'Android',
         ccOrOrganizer: 'Category Head',
-        quote: '"what the "',
+        quote:
+            '"If you\'re having run problems, I feel bad for you son.\nI got 99 problems but a glitch ain\'t one."',
         insta: 'https://www.instagram.com/akshit.saxenamide/',
         linkedin: 'https://www.linkedin.com/in/akshit-saxena-b6b613184/'));
     developers.add(DeveloperModel(
@@ -107,7 +108,7 @@ class _DevPageState extends State<DevPage> {
             'https://i.ibb.co/wQMTFcy/Whats-App-Image-2020-02-21-at-5-31-37-PM.jpg',
         platform: 'IOS',
         ccOrOrganizer: 'Organizer',
-        quote: 'quote',
+        quote: 'I\'d agree with you but then we\'d both be wrong',
         insta: 'https://www.instagram.com/tushar_tapadia/',
         linkedin: 'www.linkedin.com/in/tushar-tapadia'));
     developers.add(DeveloperModel(

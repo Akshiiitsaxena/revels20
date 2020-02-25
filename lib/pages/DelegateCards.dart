@@ -227,7 +227,7 @@ class _DelegateCardState extends State<DelegateCard> {
                                         Colors.blue.shade800.withOpacity(0.6),
                                       ],
                                     ),
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                    borderRadius: BorderRadius.circular(10.0)),
                                 height:
                                     MediaQuery.of(context).size.height * 0.055,
                                 width: MediaQuery.of(context).size.width,
