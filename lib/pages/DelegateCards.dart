@@ -235,11 +235,29 @@ class _DelegateCardState extends State<DelegateCard> {
                                 child: MaterialButton(
                                   onPressed: () {
                                     if (!isLoggedIn) {
-                                      showDialog(
-                                          context: context,
-                                          child: Container(
-                                              child: Text(
-                                                  "You need to be logged in to buy cards!")));
+                                       showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("Oops!"),
+            content: Text(
+                "You must be logged in to buy delegate cards."),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("Close"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+                                      // showDialog(
+                                      //     context: context,
+                                      //     child: Container(
+                                      //         child: Text(
+                                      //             "You need to be logged in to buy cards!")));
                                     } else
                                       Navigator.of(context).push(
                                           MaterialPageRoute<Null>(

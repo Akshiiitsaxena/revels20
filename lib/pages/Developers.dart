@@ -338,7 +338,7 @@ class Dev2 extends StatelessWidget {
               //end: Alignment.bottomRight)),
               ),
           Container(
-            margin: const EdgeInsets.only(top: 80),
+            margin: const EdgeInsets.only(top: 30),
             child: Column(
               children: <Widget>[
                 Container(

@@ -606,7 +606,7 @@ class _FavoritesState extends State<Favorites> with TickerProviderStateMixin {
                             ],
                           ),
                           Container(
-                            color: Colors.tealAccent,
+                            color: Colors.blueAccent,
                             width: 500.0,
                             height: 1.0,
                             margin: EdgeInsets.all(10.0),

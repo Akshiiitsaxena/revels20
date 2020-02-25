@@ -199,14 +199,14 @@ class _HomeState extends State<Home> {
           _buildHeaderContainer(
               context,
               'Proshow',
-              'Amazing artist and their details!',
+              'Ground Zero',
               FontAwesomeIcons.solidGrinHearts,
               Colors.redAccent,
               Colors.redAccent.withOpacity(0.125)),
           _buildHeaderContainer(
               context,
               'Delegate Cards',
-              'Various cards for different events',
+              'Your access to events!',
               FontAwesomeIcons.creditCard,
               Colors.greenAccent,
               Colors.greenAccent.withOpacity(0.125)),
@@ -347,7 +347,7 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.only(bottom: 6),
                     child: Text(
                       title,
-                      style: TextStyle(fontSize: 22.0),
+                      style: TextStyle(fontSize: 18.0),
                     ),
                   ),
                 ],
