@@ -10,8 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:revels20/main.dart';
 import 'package:revels20/models/UserModel.dart';
+import 'package:revels20/pages/BoughtCards.dart';
 import 'package:revels20/pages/RegisteredEvents.dart';
-import 'package:revels20/pages/Sponsors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -300,11 +300,11 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.white,
                       fontSize: 32.0,
                       fontWeight: FontWeight.w100),
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                 ),
               ),
               Container(
-                color: Colors.blueAccent,
+                color: Colors.transparent,
                 height: 0.5,
                 margin: EdgeInsets.symmetric(horizontal: 24.0),
                 width: MediaQuery.of(context).size.width * 0.9,
@@ -316,29 +316,33 @@ class _LoginPageState extends State<LoginPage> {
                     _buildUserTile(context, "Delegate ID", user.id.toString()),
                     _buildUserTile(context, "Registration No.", user.regNo),
                     _buildUserTile(context, "College", user.collegeName),
-                    _buildUserTile(context, "Phone", user.mobilNumber),
-                    _buildUserTile(context, "Email ID", user.emailId),
+                    // _buildUserTile(context, "Phone", user.mobilNumber),
+                    // _buildUserTile(context, "Email ID", user.emailId),
                   ],
                 ),
               ),
               Container(
-                color: Colors.blueAccent,
+                color: Colors.transparent,
                 height: 0.5,
                 margin: EdgeInsets.symmetric(horizontal: 24.0),
                 width: MediaQuery.of(context).size.width * 0.9,
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(64, 18, 64, 12),
+                padding: EdgeInsets.fromLTRB(
+                    MediaQuery.of(context).size.width * 0.25,
+                    18,
+                    MediaQuery.of(context).size.width * 0.25,
+                    12),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(10),
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    //  padding: EdgeInsets.symmetric(vertical: 12.0),
                     color: Colors.white,
                     child: Center(
                       child: RepaintBoundary(
                         child: QrImage(
                           data: user.qrCode,
-                          size: MediaQuery.of(context).size.height * 0.27,
+                          size: MediaQuery.of(context).size.height * 0.25,
                         ),
                       ),
                     ),
@@ -350,6 +354,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.black,
+                      //border: Border.all(color: Colors.blueAccent),
                       gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
@@ -361,7 +366,7 @@ class _LoginPageState extends State<LoginPage> {
                           Colors.blueAccent.withOpacity(0.9),
                         ],
                       ),
-                      borderRadius: BorderRadius.circular(25.0)),
+                      borderRadius: BorderRadius.circular(10.0)),
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.center,
@@ -388,17 +393,61 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.black,
+                      // border: Border.all(
+                      //  color: Color.fromRGBO(247, 176, 124, 1),
+                      //),
                       gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        stops: [0.1, 0.3, 0.7, 0.9],
-                        colors: [
-                          Colors.red.withOpacity(0.8),
-                          Colors.red.withOpacity(0.8),
-                          Colors.redAccent.withOpacity(1),
-                          Colors.redAccent.withOpacity(1),
-                        ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          stops: [
+                            0.1,
+                            0.9
+                          ],
+                          colors: [
+                            // Color.fromRGBO(247, 176, 124, 1).withOpacity(0.7),
+                            // Color.fromRGBO(247, 176, 124, 1).withOpacity(0.6),
+                            Colors.greenAccent.withOpacity(0.8),
+                            Colors.green
+                          ]),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  height: MediaQuery.of(context).size.height * 0.05,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: MaterialButton(
+                    onPressed: () {
+                      print("EEEEEE");
+                      Navigator.of(context).push(MaterialPageRoute<Null>(
+                          builder: (BuildContext context) {
+                        return BoughtDelegateCards();
+                      }));
+                    },
+                    child: Container(
+                      width: 300.0,
+                      alignment: Alignment.center,
+                      child: Text(
+                        "My Delegate Cards",
+                        style: TextStyle(fontSize: 16.0, color: Colors.white),
                       ),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(50.0, 30, 50.0, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      // gradient: LinearGradient(
+                      //   begin: Alignment.centerLeft,
+                      //   end: Alignment.centerRight,
+                      //   stops: [0.1, 0.3, 0.7, 0.9],
+                      //   colors: [
+                      //     Colors.red.withOpacity(0.8),
+                      //     Colors.red.withOpacity(0.8),
+                      //     Colors.redAccent.withOpacity(1),
+                      //     Colors.redAccent.withOpacity(1),
+                      //   ],
+                      // ),
                       borderRadius: BorderRadius.circular(25.0)),
                   height: MediaQuery.of(context).size.height * 0.05,
                   width: MediaQuery.of(context).size.width,
@@ -412,7 +461,8 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.center,
                       child: Text(
                         "Logout",
-                        style: TextStyle(fontSize: 16.0, color: Colors.white),
+                        style:
+                            TextStyle(fontSize: 16.0, color: Colors.redAccent),
                       ),
                     ),
                   ),
@@ -523,6 +573,20 @@ class _LoginPageState extends State<LoginPage> {
         'type': type
       });
 
+      String buyCookie = "";
+
+      List<Cookie> cookies = cookieJar
+          .loadForRequest(Uri.parse("https://register.mitrevels.in/login"));
+
+      buyCookie = cookies[0].toString();
+      int i = buyCookie.indexOf(';');
+      buyCookie = buyCookie.substring(12, i);
+      //+ ", " + (cookies[1].toString() ?? null);
+
+      print(buyCookie);
+      print(buyCookie.toString());
+      print("*********");
+
       print(response.statusCode);
       print(response.data);
 
@@ -540,7 +604,8 @@ class _LoginPageState extends State<LoginPage> {
             mobilNumber: resp.data['data']['mobile'],
             emailId: resp.data['data']['email'],
             qrCode: resp.data['data']['qr'],
-            collegeName: resp.data['data']['collname']);
+            collegeName: resp.data['data']['collname'],
+            cookie: buyCookie);
         preferences.setString('userId', user.id.toString());
         preferences.setString('userName', user.name);
         preferences.setString('userReg', user.regNo.toString());
@@ -549,6 +614,7 @@ class _LoginPageState extends State<LoginPage> {
         preferences.setString('userQR', user.qrCode);
         preferences.setString('userCollege', user.collegeName);
         preferences.setString('userPassword', password);
+        preferences.setString('userCookie', buyCookie);
         isVerifying = false;
         setState(() {});
       } else if (response.statusCode == 200 &&

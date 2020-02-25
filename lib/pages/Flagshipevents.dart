@@ -12,7 +12,11 @@ class FeaturedEvents extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: FeaturedState(),
-      
+      theme: ThemeData(
+          canvasColor: Colors.black,
+          brightness: Brightness.dark,
+          fontFamily: 'Product-Sans',
+          accentColor: Color.fromRGBO(247, 176, 124, 1)),
     );
   }
 }
@@ -51,9 +55,7 @@ class _LostFeatureState extends State<FeaturedState> {
             Column(children: [
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0)),
+                  borderRadius: BorderRadius.circular(25.0),
                   color: Colors.white,
                 ),
                 margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
@@ -67,9 +69,7 @@ class _LostFeatureState extends State<FeaturedState> {
             Column(children: [
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0)),
+                  borderRadius: BorderRadius.circular(25.0),
                   color: Colors.white,
                 ),
                 margin: EdgeInsets.symmetric(vertical: 2.0, horizontal: 5.0),
@@ -87,7 +87,8 @@ class _LostFeatureState extends State<FeaturedState> {
   }
 
   Widget myItems(IconData icon, String heading, {price = 30000}) {
-    Color color = Color.fromRGBO(Random.secure().nextInt(255), Random.secure().nextInt(255), Random.secure().nextInt(255), 1);
+    Color color = Color.fromRGBO(Random.secure().nextInt(255),
+        Random.secure().nextInt(255), Random.secure().nextInt(255), 1);
     return GestureDetector(
       onTap: () {
         print('BackHere');
@@ -108,9 +109,7 @@ class _LostFeatureState extends State<FeaturedState> {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0)),
+              borderRadius: BorderRadius.circular(10.0),
               color: Colors.grey[850],
             ),
             height: 200.0,
@@ -123,28 +122,30 @@ class _LostFeatureState extends State<FeaturedState> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Material(
-                            color: color,
-                            borderRadius: BorderRadius.circular(50.0),
+                          Container(
+                            //  borderRadius: BorderRadius.circular(50.0),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.blueAccent),
+                                borderRadius: BorderRadius.circular(50)),
                             child: Padding(
                                 padding: const EdgeInsets.all(14.0),
                                 child: Shimmer.fromColors(
                                     direction: ShimmerDirection.ttb,
                                     period: Duration(seconds: 2),
                                     baseColor: Colors.black,
-                                    highlightColor: color,
+                                    highlightColor: Colors.white,
                                     child: Icon(
                                       icon,
-                                      color: Colors.white,
+                                      color: Colors.redAccent,
                                       size: 30.0,
                                     ))),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: Text(
                               heading,
                               style: TextStyle(
-                                color: color,
+                                color: Colors.blueAccent,
                                 fontSize: 15.0,
                               ),
                               overflow: TextOverflow.ellipsis,
@@ -274,8 +275,6 @@ class _LostFeatureState extends State<FeaturedState> {
           "Featured Events",
           style: TextStyle(
             color: Colors.white,
-            fontFamily: 'Cabin',
-            fontSize: 30.0,
           ),
         ),
         centerTitle: true,
@@ -388,7 +387,6 @@ Widget getDetails(context, EventData event, int price) {
             )),
           ),
         ),
-        
         Container(
             margin: const EdgeInsets.only(top: 10.0),
             width: MediaQuery.of(context).size.width / 1.2,
@@ -473,9 +471,8 @@ Widget getDetails(context, EventData event, int price) {
                   ),
                 ),
               ],
-            )
-          ),
-          Column(
+            )),
+        Column(
           children: <Widget>[
             Container(
               margin: const EdgeInsets.only(top: 30.0),

@@ -12,6 +12,7 @@ import 'package:revels20/pages/Flagshipevents.dart';
 import 'package:revels20/pages/LiveBlog.dart';
 import 'package:revels20/pages/Login.dart';
 import 'package:revels20/pages/Events.dart';
+import 'package:revels20/pages/NewsLetter.dart';
 import 'package:revels20/pages/Proshow.dart';
 import 'package:revels20/pages/Sponsors.dart';
 import 'package:revels20/pages/drawer.dart';
@@ -25,8 +26,6 @@ class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
-
-String buyCookie;
 
 class _HomeState extends State<Home> {
   GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
@@ -56,7 +55,7 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
 
-    print("*****\n\n$buyCookie\n\n*******");
+ //   print("*****\n\n$buyCookie\n\n*******");
     //  print(cookieJar
     //       .loadForRequest(Uri.parse("https://register.techtatva.in/login")));
   }
@@ -93,7 +92,7 @@ class _HomeState extends State<Home> {
 
     //wv.InAppWebViewController controller;
 
-    print(buyCookie);
+  //  print(buyCookie);
 
     return Scaffold(
       appBar: _buildAppBar(),
@@ -218,13 +217,14 @@ class _HomeState extends State<Home> {
               FontAwesomeIcons.handsHelping,
               Colors.deepOrangeAccent,
               Colors.deepOrangeAccent.withOpacity(0.125)),
-          _buildHeaderContainer(
-              context,
-              'Live Blog',
-              'Powered by MIT Post',
-              FontAwesomeIcons.userClock,
-              Colors.yellowAccent,
-              Colors.yellowAccent.withOpacity(0.125)),
+          _buildMITPOSTHeader(context),
+          // // _buildHeaderContainer(
+          //     context,
+          //     'Live Blog',
+          //     'Powered by MIT Post',
+          //     FontAwesomeIcons.userClock,
+          //     Colors.yellowAccent,
+          //     Colors.yellowAccent.withOpacity(0.125)),
           Container(
             padding: EdgeInsets.all(24.0),
             child: Row(
@@ -232,22 +232,22 @@ class _HomeState extends State<Home> {
               children: <Widget>[
                 buildIconButton(
                     FontAwesomeIcons.facebook,
-                    "https://twitter.com/mittechtatva",
+                    "https://facebook.com/mitrevels",
                     Color.fromRGBO(59, 89, 152, 1),
                     Color.fromRGBO(59, 89, 152, 1).withOpacity(0.125)),
                 buildIconButton(
                     FontAwesomeIcons.twitter,
-                    "https://twitter.com/mittechtatva",
+                    "https://twiiter.com/mitrevels",
                     Color.fromRGBO(29, 161, 242, 1),
                     Color.fromRGBO(29, 161, 242, 1).withOpacity(0.125)),
                 buildIconButton(
                     FontAwesomeIcons.instagram,
-                    "https://twitter.com/mittechtatva",
+                    "https://instagram.com/revelsmit",
                     Colors.pinkAccent,
                     Colors.pinkAccent.withOpacity(0.125)),
                 buildIconButton(
                     FontAwesomeIcons.youtube,
-                    "https://twitter.com/mittechtatva",
+                    "https://youtube.com/revelsmit",
                     Color.fromRGBO(196, 48, 43, 1),
                     Color.fromRGBO(196, 48, 43, 1).withOpacity(0.125)),
               ],
@@ -304,22 +304,91 @@ class _HomeState extends State<Home> {
           Container(
             height: 50,
           ),
-          // Container(
-          //   width: 200.0,
-          //   height: MediaQuery.of(context).size.height * 2,
-          //   color: Colors.redAccent,
-          //   child: wv.InAppWebView(
-          //     initialUrl: "https://register.techtatva.in/buy?card=4",
-          //     initialOptions: wv.InAppWebViewWidgetOptions(
-          //         inAppWebViewOptions: wv.InAppWebViewOptions(
-          //       debuggingEnabled: true,
-          //     )),
-          //     onWebViewCreated: (wv.InAppWebViewController controller) {},
-          //     onLoadStart:
-          //         (wv.InAppWebViewController controller, String url) {},
-          //     onLoadStop: (wv.InAppWebViewController controller, String url) {},
-          //   ),
-          // )
+        ],
+      ),
+    );
+  }
+
+  _buildPOSTHeader(colorShade, icon, color, title, context) {
+    return InkWell(
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.1,
+        width: MediaQuery.of(context).size.width * 0.44,
+        decoration: BoxDecoration(
+            color: colorShade, borderRadius: BorderRadius.circular(50.0)),
+        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+        padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
+        //    color: Colors.blueAccent,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              height: MediaQuery.of(context).size.height * 0.1,
+              width: MediaQuery.of(context).size.width * 0.1,
+              child: CircleAvatar(
+                backgroundColor: Colors.white12,
+                child: Icon(
+                  icon,
+                  color: color,
+                  size: 20.0,
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.fromLTRB(12.0, 8.0, 0, 0),
+              height: 80.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(bottom: 6),
+                    child: Text(
+                      title,
+                      style: TextStyle(fontSize: 22.0),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      onTap: () {
+        if (title == "Live Blog")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return LiveBlog();
+          }));
+        else
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return Newsletter();
+          }));
+      },
+    );
+  }
+
+  Widget _buildMITPOSTHeader(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          _buildPOSTHeader(
+              Colors.yellowAccent.withOpacity(0.123),
+              FontAwesomeIcons.microphone,
+              Colors.yellowAccent,
+              "Live Blog",
+              context),
+          _buildPOSTHeader(
+              Colors.cyanAccent.withOpacity(0.125),
+              FontAwesomeIcons.newspaper,
+              Colors.cyanAccent,
+              "Newsletter",
+              context),
         ],
       ),
     );
@@ -338,7 +407,7 @@ class _HomeState extends State<Home> {
             size: 32.0,
           ),
           onPressed: () {
-            _launchURL("https://www.facebook.com/MITtechtatva/");
+            _launchURL(link);
           },
         ),
       ),
@@ -386,7 +455,7 @@ class _HomeState extends State<Home> {
         else if (title == "Events")
           Navigator.of(context)
               .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-            return Faq();
+            return Sample2();
           }));
 
         for (var event in allEvents) {
@@ -474,17 +543,21 @@ class _HomeState extends State<Home> {
 
     if (isLoggedIn == null) isLoggedIn = false;
 
+    // if (isLogged && user == null){
+
+    // }
+
     Widget name = Container(
         padding: EdgeInsets.all(0.0),
         child: Text(
-          isLoggedIn ? user.name ?? "null" : "Not logged in?",
+          isLoggedIn ? "Revels'20" : "Not logged in?",
           style: TextStyle(fontSize: 24),
         ));
     Widget email = Container(
         padding: EdgeInsets.symmetric(horizontal: 2.0),
         child: Text(
           isLoggedIn
-              ? user.emailId
+              ? "Qainaat | A WORLD APART"
               : "Please log in first in our user section.",
           style: TextStyle(color: Colors.white70),
         ));

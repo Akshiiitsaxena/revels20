@@ -68,7 +68,8 @@ _startUserCache() async {
             mobilNumber: preferences.getString('userMob'),
             emailId: preferences.getString('userEmail'),
             qrCode: preferences.getString('userQR'),
-            collegeName: preferences.getString('userCollege'));
+            collegeName: preferences.getString('userCollege'),
+            cookie: preferences.getString('userCookie'));
       } catch (e) {
         print(e);
       }
@@ -90,10 +91,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Revels',
       theme: ThemeData(
-        canvasColor: Colors.black,
-        brightness: Brightness.dark,
-        fontFamily: 'Product-Sans',
-      ),
+          canvasColor: Colors.black,
+          brightness: Brightness.dark,
+          fontFamily: 'Product-Sans',
+          accentColor: Color.fromRGBO(247, 176, 124, 1)),
       home: MyHomePage(),
     );
   }
@@ -1115,10 +1116,6 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         centerTitle: true,
         title: Text(name,
             style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w400)),
-        // background: Image.asset(image,
-        //     color: Colors.black.withOpacity(0.55),
-        //     colorBlendMode: BlendMode.darken,
-        //     fit: BoxFit.cover),
         background: Stack(
           children: <Widget>[
             Container(
@@ -1150,7 +1147,7 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                 padding: EdgeInsets.all(12.0),
                 child: IconButton(
                   icon: Icon(Icons.favorite),
-                  color: Colors.red,
+                  color: Color.fromRGBO(247, 176, 124, 1),
                   onPressed: () {
                     Navigator.push(
                       context,

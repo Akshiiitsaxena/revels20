@@ -53,16 +53,16 @@ class _DevPageState extends State<DevPage> {
             'https://i.ibb.co/c6T8BXN/Whats-App-Image-2020-02-21-at-11-44-08-PM.jpg',
         platform: 'Android',
         ccOrOrganizer: 'Category Head',
-        quote: 'quote',
+        quote: '"Let your dreams be bigger than your fears"',
         insta: 'https://www.instagram.com/ajarihantjain54/',
         linkedin: 'https://www.linkedin.com/in/arihantjain54/'));
     developers.add(DeveloperModel(
-        name: 'Naman Jain',
+        name: 'Naman',
         image:
             'https://res.cloudinary.com/nxmxnjxxn/image/upload/v1569992349/naman.jpg',
         platform: 'IOS',
         ccOrOrganizer: 'Category Head',
-        quote: 'quote',
+        quote: '"Manners Maketh Man"',
         insta: 'https://www.instagram.com/nxmxnjxxn/',
         linkedin: 'https://www.linkedin.com/in/naman-jain-3252aa147/'));
     developers.add(DeveloperModel(
@@ -71,7 +71,7 @@ class _DevPageState extends State<DevPage> {
             'https://res.cloudinary.com/nxmxnjxxn/image/upload/v1569992349/akshit.jpg',
         platform: 'Android',
         ccOrOrganizer: 'Category Head',
-        quote: 'quote',
+        quote: '"what the "',
         insta: 'https://www.instagram.com/akshit.saxenamide/',
         linkedin: 'https://www.linkedin.com/in/akshit-saxena-b6b613184/'));
     developers.add(DeveloperModel(
@@ -80,16 +80,16 @@ class _DevPageState extends State<DevPage> {
             'https://i.ibb.co/W6yHcCC/Whats-App-Image-2020-02-21-at-5-57-57-PM.jpg',
         platform: 'IOS',
         ccOrOrganizer: 'Category Head',
-        quote: 'quote',
+        quote: '"Do or do not. There is no try"',
         insta: 'https://www.instagram.com/akhileshxxenoy/',
         linkedin: 'www.linkedin.com/in/akhilesh-shenoy-a2255a15a'));
     developers.add(DeveloperModel(
         name: 'Ayush',
         image:
-            'https://i.ibb.co/5846dYM/Whats-App-Image-2020-02-21-at-9-24-11-PM.jpg',
+            'https://i.ibb.co/F3wh15X/Whats-App-Image-2020-02-22-at-11-50-02-PM.jpg',
         platform: 'Android',
         ccOrOrganizer: 'Category Head',
-        quote: 'quote',
+        quote: '"In order to be irreplaceable,\n one must always be efficient"',
         insta: 'https://www.instagram.com/ayush.m.s.1_9/',
         linkedin: 'https://www.linkedin.com/in/ayush-srivastava19777'));
     developers.add(DeveloperModel(
@@ -98,7 +98,7 @@ class _DevPageState extends State<DevPage> {
             'https://i.ibb.co/zhg3zqW/Whats-App-Image-2020-02-22-at-12-02-57-AM.jpg',
         platform: 'IOS',
         ccOrOrganizer: 'Organizer',
-        quote: 'quote',
+        quote: '"Sic Parvis Magna"',
         insta: 'https://www.instagram.com/rohitkuber/',
         linkedin: 'https://www.linkedin.com/in/rohit-kuber-b55280164/'));
     developers.add(DeveloperModel(
@@ -116,7 +116,7 @@ class _DevPageState extends State<DevPage> {
             'https://i.ibb.co/PgfJXWL/Whats-App-Image-2020-02-21-at-6-17-49-PM.jpg',
         platform: 'Android',
         ccOrOrganizer: 'Organizer',
-        quote: 'quote',
+        quote: '"Talent work, Genius create"',
         insta: 'https://www.instagram.com/hardik.bharunt/',
         linkedin: 'https://www.linkedin.com/in/hardik-bharunt/'));
     developers.add(DeveloperModel(
@@ -124,7 +124,8 @@ class _DevPageState extends State<DevPage> {
         image: 'https://i.ibb.co/7j6BhXL/ch.jpg',
         platform: 'Android',
         ccOrOrganizer: 'Organizer',
-        quote: 'lasdjf;laskdjf;laksjf',
+        quote:
+            '"Dont spend your life thinking\n about what-ifs enjoy the present"',
         insta: 'https://www.instagram.com/chakshusaraswat/',
         linkedin: 'https://www.linkedin.com/in/chakshu-saraswat-836160171/'));
     developers.add(DeveloperModel(
@@ -133,7 +134,7 @@ class _DevPageState extends State<DevPage> {
             'https://i.ibb.co/rxgN4qx/Whats-App-Image-2020-02-21-at-5-31-30-PM.jpg',
         platform: 'Android',
         ccOrOrganizer: 'Organizer',
-        quote: 'There\'s only the one truth.',
+        quote: '"There\'s only the one truth"',
         insta: 'https://www.instagram.com/infinite_verma/',
         linkedin: 'https://www.linkedin.com/in/anant-verma/'));
   }
@@ -316,6 +317,9 @@ class Dev2 extends StatelessWidget {
     final Color color1 = Color.fromRGBO(44, 183, 233, 0.8); //Color(0xff00b09b);
     final Color color2 = Color.fromRGBO(247, 176, 126, 0.8);
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+        ),
         backgroundColor: Colors.black87,
         body: Stack(children: <Widget>[
           Container(
@@ -357,8 +361,12 @@ class Dev2 extends StatelessWidget {
                         horizontal: 10.0, vertical: 5.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0)),
-                    child: Text("${developerDetails.quote}\t",
-                        maxLines: 3, style: TextStyle(color: Colors.white)),
+                    child: Text(
+                      "${developerDetails.quote}\t",
+                      maxLines: 3,
+                      style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20.0),

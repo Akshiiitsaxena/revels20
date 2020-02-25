@@ -207,7 +207,7 @@ class _ScheduleState extends State<Schedule>
                                       ? Icons.favorite
                                       : Icons.favorite_border),
                                   color: isFav((allSchedule[index].name))
-                                      ? Colors.redAccent
+                                      ? Color.fromRGBO(247, 176, 124, 1)
                                       : Colors.white54,
                                   onPressed: () {
                                     if (!true) {

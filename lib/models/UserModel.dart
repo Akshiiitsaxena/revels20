@@ -6,6 +6,7 @@ class UserData {
   final String emailId;
   final String qrCode;
   final String collegeName;
+  final String cookie;
   List<String> favoriteEvents;
 
   UserData({
@@ -16,6 +17,7 @@ class UserData {
     this.emailId,
     this.qrCode,
     this.collegeName,
+    this.cookie,
     this.favoriteEvents,
   });
 }

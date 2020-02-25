@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:location/location.dart';
 import 'package:revels20/models/MapModel.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:geolocator/geolocator.dart';
@@ -60,7 +61,7 @@ class _MyMapState extends State<MyMap> {
   }
 
   SharedPreferences preferences;
-  var heading = "All";
+  var heading = "Click on a Category";
 
   _fetchLocations() async {
     List<MapData> locations = [];
@@ -130,7 +131,7 @@ class _MyMapState extends State<MyMap> {
       else
         popularLocations.add(location);
     }
-    viewLocations = allLocations;
+    viewLocations = [];
     print(foodLocations.length);
     print(sportsLocations.length);
   }
@@ -157,8 +158,7 @@ class _MyMapState extends State<MyMap> {
         ImageConfiguration(devicePixelRatio: 2.5), "assets/ProshowMarker.png");
 
     foodIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        "assets/FoodMarker.png");
+        ImageConfiguration(devicePixelRatio: 2.5), "assets/FoodMarker.png");
   }
 
   _getIcon(String url) async {
@@ -172,6 +172,28 @@ class _MyMapState extends State<MyMap> {
 
   void getCurrentLocation() async {
     //waits till the current location is obtained and then opens the map on that location and rebuilds the widget tree
+
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.DENIED) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.GRANTED) {
+        return;
+      }
+    }
 
     Position res = await Geolocator().getCurrentPosition();
     setState(() {
@@ -263,7 +285,10 @@ class _MyMapState extends State<MyMap> {
             body: Scaffold(
               key: _scaffoldKey,
               appBar: AppBar(
-                title: Text("Hello maps"),
+                title: Text(
+                  "Welcome to Revels!",
+                  style: TextStyle(fontSize: 22),
+                ),
                 centerTitle: true,
                 //backgroundColor: Colors.blueAccent,
               ),
@@ -296,6 +321,8 @@ class _MyMapState extends State<MyMap> {
       ),
     );
   }
+
+  int counter = 0;
 
   Set<Marker> _createMarker(var currentTag) {
     // the LIST of positions have to be used as a SET since
@@ -353,6 +380,7 @@ class _MyMapState extends State<MyMap> {
 
     LatLng pos;
 
+    MarkerId mak;
     // this is the onTap function for the list of locations. tapping will
     // search throught the list of locations and select the one whose name is
     // same as that of the tile we have tapped on (I'm passing the name of the tile as an argument)
@@ -360,32 +388,42 @@ class _MyMapState extends State<MyMap> {
     for (var i in _markerList) {
       if (i.infoWindow.title == str) {
         pos = i.position;
+        mak = i.markerId;
       }
     }
 
     //simply animates the camera to the position we have selected
     setState(() {
-      //currentTag = "all";
-      _child = mapWidget();
       _controller.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(target: pos, zoom: 19)));
-      print("i am alive");
-      Flushbar(
-        titleText: Text(
-          "Tap on the marker ",
-          style: TextStyle(
-              color: Color.fromRGBO(247, 176, 124, 1),
-              fontSize: 20,
-              fontWeight: FontWeight.bold),
-        ),
-        messageText: Text(
-          "The Direction button and Location name will be shown",
-          style: TextStyle(color: Colors.blueGrey),
-        ),
-        isDismissible: true,
-        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-        flushbarPosition: FlushbarPosition.TOP,
-      ).show(_scaffoldKey.currentContext);
+      _controller.showMarkerInfoWindow(mak);
+      if (counter == 0) {
+        print("i am alive");
+        Flushbar(
+          titleText: Text(
+            "Tap on the marker ",
+            style: TextStyle(
+                color: Color.fromRGBO(247, 176, 124, 1),
+                fontSize: 15,
+                fontWeight: FontWeight.bold),
+          ),
+          messageText: RichText(
+            text: TextSpan(
+                text: 'The Direction button and Location name will be shown ',
+                style: DefaultTextStyle.of(context).style,
+                children: <TextSpan>[
+                  TextSpan(
+                      text: '\n\n Swipe to Dismiss',
+                      style:
+                          TextStyle(color: Color.fromRGBO(247, 176, 124, 1))),
+                ]),
+          ),
+          isDismissible: true,
+          dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+          flushbarPosition: FlushbarPosition.TOP,
+        ).show(_scaffoldKey.currentContext);
+        counter = 1;
+      }
     });
   }
 

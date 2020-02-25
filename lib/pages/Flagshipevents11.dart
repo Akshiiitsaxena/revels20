@@ -12,7 +12,6 @@ class FeaturedEvents extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: FeaturedState(),
-      
     );
   }
 }
@@ -87,7 +86,8 @@ class _LostFeatureState extends State<FeaturedState> {
   }
 
   Widget myItems(IconData icon, String heading, {price = 30000}) {
-    Color color = Color.fromRGBO(Random.secure().nextInt(255), Random.secure().nextInt(255), Random.secure().nextInt(255), 1);
+    Color color = Color.fromRGBO(Random.secure().nextInt(255),
+        Random.secure().nextInt(255), Random.secure().nextInt(255), 1);
     return GestureDetector(
       onTap: () {
         print('BackHere');
@@ -272,11 +272,7 @@ class _LostFeatureState extends State<FeaturedState> {
       appBar: AppBar(
         title: Text(
           "Featured Events",
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Cabin',
-            fontSize: 30.0,
-          ),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,

@@ -200,7 +200,7 @@ class _ProshowState extends State<Proshow> {
                                 children: <Widget>[
                                   Text(
                                     "${getDate(artistIndex + 1)}",
-                                    style: headStyle(20),
+                                    style: TextStyle(color: Color.fromRGBO(247, 176, 124, 1),fontSize: 20.0),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -210,7 +210,7 @@ class _ProshowState extends State<Proshow> {
                                   Text(
                                     content['data']["${artistIndex + 1}"]
                                         ['time'],
-                                    style: headStyle(20),
+                                    style: TextStyle(color: Color.fromRGBO(247, 176, 124, 1),fontSize: 20.0),
                                   )
                                 ],
                               ),
