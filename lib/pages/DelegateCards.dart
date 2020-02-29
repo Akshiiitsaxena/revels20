@@ -104,195 +104,216 @@ class _DelegateCardState extends State<DelegateCard> {
     return cards.toSet().toList();
   }
 
-  Column buildCardRow(BuildContext context, String type) {
+  Widget buildCardRow(BuildContext context, String type) {
     List<DelegateCardModel> filteredCards = [];
 
     for (var i in allCards) {
-      if (i.type == type.toUpperCase()) {
+      if (i.type == type.toUpperCase() &&
+          !((i.paymentMode < 2) || i.forSale == 0)) {
         filteredCards.add(i);
       }
     }
 
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.fromLTRB(38, 6, 12, 6),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            type,
-            style: TextStyle(fontSize: 22.0),
-          ),
-        ),
-        Container(
-          // color: Colors.red.withOpacity(0.2),
-          height: 300,
-          //width: MediaQuery.of(context),
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: filteredCards.length,
-            itemBuilder: (BuildContext context, int index) {
-              bool isBought = false;
-
-              print(filteredCards[index].name);
-              print(filteredCards[index].mahePrice);
-
-              for (int i in boughtCardsID) {
-                print(i);
-                print("THIS IS I");
-                if (filteredCards[index].id == i) {
-                  isBought = true;
-                  break;
-                }
-              }
-              return Container(
-                width: MediaQuery.of(context).size.width * 0.85,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.white10,
+    return filteredCards.length == 0
+        ? Container()
+        : Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(38, 6, 12, 6),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  type,
+                  style: TextStyle(fontSize: 22.0),
                 ),
-                margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
-                child: Container(
-                  padding: EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          filteredCards[index].name,
-                          style: TextStyle(fontSize: 20.0),
-                        ),
+              ),
+              Container(
+                // color: Colors.red.withOpacity(0.2),
+                height: 300,
+                //width: MediaQuery.of(context),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: filteredCards.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    bool isBought = false;
+
+                    print(filteredCards[index].name);
+                    print(filteredCards[index].mahePrice);
+
+                    for (int i in boughtCardsID) {
+                      print(i);
+                      print("THIS IS I");
+                      if (filteredCards[index].id == i) {
+                        isBought = true;
+                        break;
+                      }
+                    }
+
+                    return Container(
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white10,
                       ),
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          filteredCards[index].desc,
-                          style:
-                              TextStyle(fontSize: 14.0, color: Colors.white70),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+                      child: Container(
+                        padding: EdgeInsets.all(12.0),
+                        child: ListView(
+                          //  crossAxisAlignment: CrossAxisAlignment.start,
+                          //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            Text(
-                              "Mahe Price: ${filteredCards[index].mahePrice}",
-                              style: TextStyle(fontSize: 16.0),
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                filteredCards[index].name,
+                                style: TextStyle(fontSize: 20.0),
+                              ),
                             ),
-                            Text(
-                              "Non-Mahe Price: ${filteredCards[index].nonMahePrice}",
-                              style: TextStyle(fontSize: 16.0),
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                filteredCards[index].desc,
+                                style: TextStyle(
+                                    fontSize: 14.0, color: Colors.white70),
+                              ),
                             ),
+                            Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Text(
+                                    "Mahe Price: ${filteredCards[index].mahePrice}",
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
+                                  filteredCards[index].nonMahePrice != 0
+                                      ? Text(
+                                          "Non-Mahe Price: ${filteredCards[index].nonMahePrice}",
+                                          style: TextStyle(fontSize: 16.0),
+                                        )
+                                      : Container(),
+                                ],
+                              ),
+                            ),
+                            isBought
+                                ? Container(
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.all(10),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.check_circle_outline,
+                                            color:
+                                                Colors.green.withOpacity(0.5),
+                                          ),
+                                          Container(
+                                            width: 8.0,
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            "Already Purchased",
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.green.withOpacity(0.5),
+                                            ),
+                                          )
+                                        ]),
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.black,
+                                          gradient: LinearGradient(
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.centerRight,
+                                            stops: [0.1, 0.3, 0.7, 0.9],
+                                            colors: [
+                                              Colors.blueAccent
+                                                  .withOpacity(0.9),
+                                              Colors.blueAccent
+                                                  .withOpacity(0.7),
+                                              Colors.blue.shade800
+                                                  .withOpacity(0.8),
+                                              Colors.blue.shade800
+                                                  .withOpacity(0.6),
+                                            ],
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0)),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.055,
+                                      width: MediaQuery.of(context).size.width,
+                                      alignment: Alignment.center,
+                                      child: MaterialButton(
+                                        onPressed: () {
+                                          if (!isLoggedIn) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: new Text("Oops!"),
+                                                  content: Text(
+                                                      "You must be logged in to buy delegate cards."),
+                                                  actions: <Widget>[
+                                                    new FlatButton(
+                                                      child: new Text("Close"),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                            // showDialog(
+                                            //     context: context,
+                                            //     child: Container(
+                                            //         child: Text(
+                                            //             "You need to be logged in to buy cards!")));
+                                          } else
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute<Null>(builder:
+                                                    (BuildContext context) {
+                                              return BuyCard(
+                                                  filteredCards[index].id);
+                                            })).then((value) {
+                                              setState(() {});
+                                            });
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Buy Now",
+                                            style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                           ],
                         ),
                       ),
-                      isBought
-                          ? Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.all(10),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Icon(
-                                      Icons.check_circle_outline,
-                                      color: Colors.green.withOpacity(0.5),
-                                    ),
-                                    Container(
-                                      width: 8.0,
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "Already Purchased",
-                                      style: TextStyle(
-                                        color: Colors.green.withOpacity(0.5),
-                                      ),
-                                    )
-                                  ]),
-                            )
-                          : Container(
-                              padding: EdgeInsets.all(10),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      stops: [0.1, 0.3, 0.7, 0.9],
-                                      colors: [
-                                        Colors.blueAccent.withOpacity(0.9),
-                                        Colors.blueAccent.withOpacity(0.7),
-                                        Colors.blue.shade800.withOpacity(0.8),
-                                        Colors.blue.shade800.withOpacity(0.6),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.055,
-                                width: MediaQuery.of(context).size.width,
-                                alignment: Alignment.center,
-                                child: MaterialButton(
-                                  onPressed: () {
-                                    if (!isLoggedIn) {
-                                       showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: new Text("Oops!"),
-            content: Text(
-                "You must be logged in to buy delegate cards."),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text("Close"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                    );
+                  },
+                ),
               ),
+              Container(
+                color: Colors.transparent,
+                height: 0.5,
+                width: 300,
+                margin: EdgeInsets.fromLTRB(0, 8, 0, 12.0),
+              )
             ],
           );
-        },
-      );
-                                      // showDialog(
-                                      //     context: context,
-                                      //     child: Container(
-                                      //         child: Text(
-                                      //             "You need to be logged in to buy cards!")));
-                                    } else
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute<Null>(
-                                              builder: (BuildContext context) {
-                                        return BuyCard(filteredCards[index].id);
-                                      })).then((value) {
-                                        setState(() {});
-                                      });
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Buy Now",
-                                      style: TextStyle(
-                                          fontSize: 16.0, color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        Container(
-          color: Colors.transparent,
-          height: 0.5,
-          width: 300,
-          margin: EdgeInsets.fromLTRB(0, 8, 0, 12.0),
-        )
-      ],
-    );
   }
 }
 

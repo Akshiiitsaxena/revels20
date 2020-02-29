@@ -1,4 +1,4 @@
-package com.example.revels20
+package com.mit.mitrevels20
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

@@ -7,6 +7,7 @@ import 'package:revels20/HomeImages.dart';
 import 'package:revels20/main.dart';
 import 'package:revels20/models/UserModel.dart';
 import 'package:revels20/pages/Categories.dart';
+import 'package:revels20/pages/Conveners.dart';
 import 'package:revels20/pages/DelegateCards.dart';
 import 'package:revels20/pages/Flagshipevents.dart';
 import 'package:revels20/pages/LiveBlog.dart';
@@ -29,23 +30,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
-  // Future<Dio> addStuff(Dio dio) async {
-  //   Directory tempDir = await getTemporaryDirectory();
-  //   String tempPath = tempDir.path;
-
-  //   var cookieJar = PersistCookieJar(
-  //       dir: tempPath, ignoreExpires: true, persistSession: true);
-
-  //   dio.interceptors.add(CookieManager(cookieJar));
-  // }
-
-  _getCookie() async {
-    //print(dio.);
-    // Directory tempDir = await getTemporaryDirectory();
-    // String tempPath = tempDir.path;
-    // var cookieJar = PersistCookieJar(
-    //     dir: tempPath, ignoreExpires: true, persistSession: true);
-  }
 
   String url = "";
   double progress = 0;
@@ -54,46 +38,10 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    //   print("*****\n\n$buyCookie\n\n*******");
-    //  print(cookieJar
-    //       .loadForRequest(Uri.parse("https://register.techtatva.in/login")));
   }
-
-  // CookieManager cookieManager =
-
-  // WebViewController webViewController;
 
   @override
   Widget build(BuildContext context) {
-    _getCookie();
-
-    // wv.InAppWebViewController inappWebView;
-
-    // wv.CookieManager cManager = wv.CookieManager.instance();
-
-    // try {
-    //   cManager.setCookie(
-    //     url: 'https://register.techtatva.in/buy?card=4',
-    //     name: 'connect.sid',
-    //     value: buyCookie,
-    //     isSecure: true,
-    //     domain: 'register.techtatva.in',
-    //   );
-    // } catch (e) {
-    //   print(e);
-    // }
-
-    // wv.InAppWebView webView = wv.InAppWebView(
-    //     initialOptions: wv.InAppWebViewWidgetOptions(
-    //         inAppWebViewOptions: wv.InAppWebViewOptions(
-    //   debuggingEnabled: true,
-    // )));
-
-    //wv.InAppWebViewController controller;
-
-    //  print(buyCookie);
-
     return Scaffold(
       appBar: _buildAppBar(),
       key: _key,
@@ -174,6 +122,15 @@ class _HomeState extends State<Home> {
                 //         _key.currentState.openDrawer();
                 //       }),
                 // )
+                GestureDetector(
+                  child: Container(
+                    height: 250,
+                    color: Colors.redAccent.withOpacity(0.0),
+                  ),
+                  onTap: () {
+                    setState(() {});
+                  },
+                )
               ],
             ),
           ),
@@ -237,7 +194,7 @@ class _HomeState extends State<Home> {
                     Color.fromRGBO(59, 89, 152, 1).withOpacity(0.125)),
                 buildIconButton(
                     FontAwesomeIcons.twitter,
-                    "https://twiiter.com/mitrevels",
+                    "https://twitter.com/revelsmit",
                     Color.fromRGBO(29, 161, 242, 1),
                     Color.fromRGBO(29, 161, 242, 1).withOpacity(0.125)),
                 buildIconButton(
@@ -247,7 +204,7 @@ class _HomeState extends State<Home> {
                     Colors.pinkAccent.withOpacity(0.125)),
                 buildIconButton(
                     FontAwesomeIcons.youtube,
-                    "https://youtube.com/revelsmit",
+                    "https://www.youtube.com/channel/UC9gwWd47a0q042qwEgutjWw",
                     Color.fromRGBO(196, 48, 43, 1),
                     Color.fromRGBO(196, 48, 43, 1).withOpacity(0.125)),
               ],
@@ -587,6 +544,7 @@ class _HomeState extends State<Home> {
             color: Colors.blueAccent,
           ),
           _buildListTile(context, "Developers", FontAwesomeIcons.code),
+          _buildListTile(context, "Conveners", FontAwesomeIcons.tag),
           _buildListTile(context, "Report a bug", Icons.bug_report),
         ],
       ),
@@ -613,6 +571,11 @@ class _HomeState extends State<Home> {
           Navigator.of(context)
               .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
             return Developers();
+          }));
+        else if (name == "Conveners")
+          Navigator.of(context)
+              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+            return ConvenersPage();
           }));
         else {
           _launchURL("mailto:appdev.revels20@gmail.com?subject=BUGZZZ&body=");

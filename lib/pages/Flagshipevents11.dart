@@ -396,7 +396,7 @@ Widget getDetails(context, EventData event, int price) {
             ),
             Container(
               margin: const EdgeInsets.only(top: 20.0),
-              height: 200,
+          //    height: 200,
               width: MediaQuery.of(context).size.width / 1.2,
               child: ListView(
                 children: <Widget>[

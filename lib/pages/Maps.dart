@@ -429,6 +429,7 @@ class _MyMapState extends State<MyMap> {
 
   Widget widget2(context) {
     return Container(
+      padding: EdgeInsets.only(bottom: 35),
       decoration: BoxDecoration(),
       height: MediaQuery.of(context).size.height * 0.3,
       child: ListView.builder(

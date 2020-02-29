@@ -1,9 +1,10 @@
 import 'dart:io';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:cookie_jar/cookie_jar.dart' as cm;
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -15,6 +16,7 @@ import 'package:revels20/pages/DelegateCards.dart';
 import 'package:revels20/pages/Login.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:stretchy_header/stretchy_header.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Proshow extends StatefulWidget {
   @override
@@ -27,7 +29,21 @@ class _ProshowState extends State<Proshow> {
   Map artistInMap = {};
   List artistList = [];
   Map content;
+  Map proshow;
+  bool profetch = false;
   Future<Map> fetchProshowArtist() async {
+    final responsecc = await http.get('https://api.mitrevels.in/categories');
+    content = json.decode(responsecc.body);
+    for (Map i in content["data"]) {
+      if (i["id"] == 141) {
+        print(i);
+        proshow = i;
+        break;
+      }
+    }
+    setState(() {
+      profetch = true;
+    });
     final response =
         await http.get('https://appdev.mitrevels.in/proshow/android');
     content = json.decode(response.body);
@@ -52,6 +68,7 @@ class _ProshowState extends State<Proshow> {
   var currentPage = imagesArtist.length - 1.0;
   @override
   Widget build(BuildContext context) {
+    _checkBoughtCards();
     PageController controller =
         PageController(initialPage: imagesArtist.length, keepPage: false);
     controller.addListener(() {
@@ -88,8 +105,166 @@ class _ProshowState extends State<Proshow> {
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   centerTitle: true,
-                  automaticallyImplyLeading: false,
+                  automaticallyImplyLeading: true,
                   elevation: 10.0,
+                  actions: <Widget>[
+                    IconButton(
+                        icon: Icon(Icons.call),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (context) {
+                                Size size = MediaQuery.of(context).size;
+                                String cc1Name = "Ribhav Modi";
+                                String cc2Name = "Sajal Gupta";
+                                return AlertDialog(
+                                  backgroundColor: Colors.transparent,
+                                  content: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        onTap: () async {
+                                          var url =
+                                              "tel:+918872516915"; //proshow["cc1Contact"]
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 10.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                            color: Colors.cyan.withOpacity(0.7),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                padding: EdgeInsets.all(10.0),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.cyan),
+                                                child: Icon(
+                                                  Icons.call,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              Container(
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 15.0),
+                                                child: Text('$cc1Name',
+                                                    maxLines: 2),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          var url = "tel:+919910747712";
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 10.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                            color:
+                                                Colors.orange.withOpacity(0.7),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                padding: EdgeInsets.all(10.0),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.orange),
+                                                child: Icon(
+                                                  Icons.call,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 15.0),
+                                                child: Text(
+                                                  '$cc2Name',
+                                                  maxLines: 2,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                                /*Align(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color.fromRGBO(247, 176, 124,1),//Color.fromRGBO(44,183,233,1)
+                                            ),
+                                            child: Text("$cc1Name",maxLines: 2),
+                                          ),
+                                      ),
+                                        onTap: ()async {
+                                          var url = proshow["cc1Contact"];
+                                          print(url);
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color.fromRGBO(44,183,233,1)
+                                          ),
+                                          child: Icon(Icons.call),
+                                        ),
+                                        onTap: ()async {
+                                          var url = proshow["cc2Contact"];
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                    ),
+
+                                  ],
+                                ),*/
+                              });
+                        })
+                  ],
                 ),
                 body: Column(
                   children: <Widget>[
@@ -129,65 +304,53 @@ class _ProshowState extends State<Proshow> {
                     ),
                   ],
                 ),
-                bottomNavigationBar: (content["sales"] == true)
-                    ? (4 > currentPage)
+                bottomNavigationBar: ((content["sales"] == true)
+                    ? ((4 > currentPage)
                         ? Container(
                             width: MediaQuery.of(context).size.width * 0.95,
-                            child: SliderButton(
-                                backgroundColor: Colors.black,
-                                //buttonColor: Color.fromRGBO(44, 183, 233, 1),
-                                buttonColor: Colors.green,
-                                radius: 10.0,
-                                buttonSize: 80.0,
-                                width: MediaQuery.of(context).size.width,
-                                height: (currentPage > 3 && currentPage < 4)
-                                    ? (1 -
-                                            (currentPage -
-                                                currentPage.toInt())) *
-                                        50.0
-                                    : 50.0,
-                                alignLabel: Alignment.centerRight,
-                                dismissible: false,
-                                action: () {
-                                  // print('Tapped'); //TODO Proshow payment
-                                  // setState(() {
-
-                                  //   //booltag = !booltag;
-                                  // });
-                                  !isLoggedIn
-                                      ? showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: new Text("Oops!"),
-                                              content: Text(
-                                                  "It seems like you are not logged in, please login first in our user section."),
-                                              actions: <Widget>[
-                                                new FlatButton(
-                                                  child: new Text("Close"),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        )
-                                      : Navigator.of(context).push(
-                                          MaterialPageRoute<Null>(
-                                              builder: (BuildContext context) {
-                                          return BuyCard(58); //proshow card ID
-                                        })).then((value) {
-                                          _checkBoughtCards();
-                                          if (hasBought)
-                                            showDialog(
+                            child: (hasBought)
+                                ? Padding(
+                                    padding: EdgeInsets.all(5.0),
+                                    child: Container(
+                                        alignment: Alignment.center,
+                                        height: (currentPage > 3 &&
+                                                currentPage < 4)
+                                            ? (1 -
+                                                    (currentPage -
+                                                        currentPage.toInt())) *
+                                                50.0
+                                            : 50.0,
+                                        child: Text(
+                                          'Passes Already Purchased',
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Colors.white30),
+                                        )),
+                                  )
+                                : SliderButton(
+                                    backgroundColor: Colors.black,
+                                    //buttonColor: Color.fromRGBO(44, 183, 233, 1),
+                                    buttonColor: Colors.green,
+                                    radius: 10.0,
+                                    buttonSize: 80.0,
+                                    width: MediaQuery.of(context).size.width,
+                                    height: (currentPage > 3 && currentPage < 4)
+                                        ? (1 -
+                                                (currentPage -
+                                                    currentPage.toInt())) *
+                                            50.0
+                                        : 50.0,
+                                    alignLabel: Alignment.centerRight,
+                                    dismissible: false,
+                                    action: () {
+                                      !isLoggedIn
+                                          ? showDialog(
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return AlertDialog(
-                                                  title: new Text(
-                                                      "Congratulation!"),
+                                                  title: new Text("Oops!"),
                                                   content: Text(
-                                                      "You have successfully purchased your proshow pass!"),
+                                                      "It seems like you are not logged in, please login first in our user section."),
                                                   actions: <Widget>[
                                                     new FlatButton(
                                                       child: new Text("Close"),
@@ -199,23 +362,54 @@ class _ProshowState extends State<Proshow> {
                                                   ],
                                                 );
                                               },
-                                            );
-                                          setState(() {});
-                                        });
-                                },
-                                label: Text("Swipe to Buy Proshow Pass",
-                                    style: TextStyle(
-                                        color: Colors.red.withOpacity(1))),
-                                icon: Text('Buy Now\t➤',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18))))
+                                            )
+                                          : Navigator.of(context).push(
+                                              MaterialPageRoute<Null>(builder:
+                                                  (BuildContext context) {
+                                              return BuyCard(
+                                                  58); //proshow card ID
+                                            })).then((value) {
+                                              _checkBoughtCards();
+                                              if (hasBought)
+                                                showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: new Text(
+                                                          "Congratulation!"),
+                                                      content: Text(
+                                                          "You have successfully purchased your proshow pass!"),
+                                                      actions: <Widget>[
+                                                        new FlatButton(
+                                                          child:
+                                                              new Text("Close"),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              setState(() {});
+                                            });
+                                    },
+                                    label: Text("Swipe to Buy Proshow Pass",
+                                        style: TextStyle(
+                                            color: Colors.red.withOpacity(1))),
+                                    icon: Text('Buy Now\t➤',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18))))
                         : SizedBox(
                             height: 50.0,
-                          )
+                          ))
                     : SizedBox(
                         height: 50.0,
-                      ),
-              )
+                      )))
             : Scaffold(
                 resizeToAvoidBottomInset: true,
                 resizeToAvoidBottomPadding: true,
@@ -228,7 +422,168 @@ class _ProshowState extends State<Proshow> {
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   centerTitle: true,
-                  automaticallyImplyLeading: false,
+                  automaticallyImplyLeading: true,
+                  actions: <Widget>[
+                    IconButton(
+                        icon: Icon(
+                          Icons.call,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: true,
+                              builder: (context) {
+                                Size size = MediaQuery.of(context).size;
+                                String cc1Name = "Ribhav Modi";
+                                String cc2Name = "Sajal Gupta";
+                                return AlertDialog(
+                                  backgroundColor: Colors.transparent,
+                                  content: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        onTap: () async {
+                                          var url =
+                                              "tel:+918872516915"; //proshow["cc1Contact"]
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 10.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                            color: Colors.cyan.withOpacity(0.7),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                padding: EdgeInsets.all(10.0),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.cyan),
+                                                child: Icon(
+                                                  Icons.call,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              Container(
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 15.0),
+                                                child: Text('$cc1Name',
+                                                    maxLines: 2),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          var url = "tel:+919910747712";
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 10.0),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                            color:
+                                                Colors.orange.withOpacity(0.7),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                alignment: Alignment.centerLeft,
+                                                padding: EdgeInsets.all(10.0),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.orange),
+                                                child: Icon(
+                                                  Icons.call,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 15.0),
+                                                child: Text(
+                                                  '$cc2Name',
+                                                  maxLines: 2,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                                /*Align(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  children: <Widget>[
+                                    GestureDetector(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color.fromRGBO(247, 176, 124,1),//Color.fromRGBO(44,183,233,1)
+                                            ),
+                                            child: Text("$cc1Name",maxLines: 2),
+                                          ),
+                                      ),
+                                        onTap: ()async {
+                                          var url = proshow["cc1Contact"];
+                                          print(url);
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                    ),
+                                    GestureDetector(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color.fromRGBO(44,183,233,1)
+                                          ),
+                                          child: Icon(Icons.call),
+                                        ),
+                                        onTap: ()async {
+                                          var url = proshow["cc2Contact"];
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Could not launch $url';
+                                          }
+                                        },
+                                    ),
+
+                                  ],
+                                ),*/
+                              });
+                        })
+                  ],
                   elevation: 10.0,
                 ),
                 body: Container(
@@ -264,8 +619,9 @@ class _ProshowState extends State<Proshow> {
                       headerData: HeaderData(
                         blurContent: false,
                         headerHeight: 250,
-                        header: Image.network(
-                          content['data']["${artistI + 1}"]['artist_image_url'],
+                        header: CachedNetworkImage(
+                          imageUrl: content['data']["${artistI + 1}"]
+                              ['artist_image_url'],
                           fit: BoxFit.fitWidth,
                         ),
                       ),
@@ -313,7 +669,7 @@ class _ProshowState extends State<Proshow> {
                                     ),
                                   ),
                                   Text(
-                                    content['data']["${artistIndex + 1}"]
+                                    content['data']["${6 - (artistIndex)}"]
                                         ['time'],
                                     style: headStyle(20),
                                   )
@@ -416,7 +772,6 @@ class _ProshowState extends State<Proshow> {
 
   _checkBoughtCards() async {
     List<int> boughtCardsID = await _fetchBoughtCards();
-
     for (var i in boughtCardsID) {
       if (i == 58) {
         hasBought = true;
@@ -442,7 +797,6 @@ class _ProshowState extends State<Proshow> {
 
     if (resp.statusCode == 200) {
       jsonData = resp.data;
-
       try {
         for (var json in jsonData['data']) {
           try {
@@ -469,14 +823,14 @@ class _ProshowState extends State<Proshow> {
 
   String getDate(int i) {
     String date = "";
-    if (i == 1) {
-      date = "4th March";
-    } else if (i == 2) {
-      date = "5th March";
-    } else if (i <= 4) {
-      date = "6th March";
-    } else {
+    if (i == 1 || i == 2) {
       date = "7th March";
+    } else if (i == 3 || i == 4) {
+      date = "6th March";
+    } else if (i == 5) {
+      date = "5th March";
+    } else if (i == 6) {
+      date = "4th March";
     }
     return date;
   }
@@ -561,8 +915,8 @@ class CardScrollWidget extends StatelessWidget {
                                       topLeft: Radius.circular(10.0),
                                       bottomLeft: Radius.circular(10.0),
                                       bottomRight: Radius.circular(10.0)),
-                                  child: Image.network(
-                                    content['data']["${j + 1}"]
+                                  child: CachedNetworkImage(
+                                    imageUrl: content['data']["${j + 1}"]
                                         ['vertical_image_url'],
                                     fit: BoxFit.cover,
                                   )),

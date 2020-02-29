@@ -334,7 +334,7 @@ class _ResultsState extends State<Results> with TickerProviderStateMixin {
           Icons.assessment,
           color: Colors.white,
         ),
-        text: "Round " + i.toString(),
+        text: "Round " + (i + 1).toString(),
       );
 
       tabContainers[i] = Container(

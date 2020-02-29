@@ -545,14 +545,15 @@ Widget getDetails(context, event) {
             ),
             Container(
                 margin: const EdgeInsets.only(top: 20.0),
-                height: 200,
+                //   height: 200,
                 width: MediaQuery.of(context).size.width / 1.2,
                 child: Text(
                     event['longDesc'].length == 0
                         ? event['shortDesc']
                         : event['longDesc'],
                     style: TextStyle(color: Colors.white70, fontSize: 16.0),
-                    textAlign: TextAlign.center))
+                    textAlign: TextAlign.center)),
+            Container(height: 25)
           ],
         ),
       ],

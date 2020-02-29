@@ -537,14 +537,15 @@ Widget getDetails(context, EventData event, int price) {
             ),
             Container(
                 margin: const EdgeInsets.only(top: 20.0),
-                height: 200,
+                //  height: 200,
                 width: MediaQuery.of(context).size.width / 1.2,
                 child: Text(
                     event.longDescription.length == 0
                         ? event.shortDescription
                         : event.longDescription,
                     style: TextStyle(color: Colors.white70, fontSize: 16.0),
-                    textAlign: TextAlign.center))
+                    textAlign: TextAlign.center)),
+            Container(height: 25)
           ],
         ),
       ],

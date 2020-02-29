@@ -723,7 +723,7 @@ class _ScheduleState extends State<Schedule>
   getEventDescription(ScheduleData scheduleData) {
     for (var i in allEvents) {
       if (i.id == scheduleData.eventId) {
-        return i.longDescription;
+        return i.longDescription == "" ? i.shortDescription : i.longDescription;
       }
     }
   }

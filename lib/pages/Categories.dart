@@ -773,11 +773,13 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
                         ),
                         Container(
                           padding: EdgeInsets.all(5.0),
-                          child: ListTile(
-                            leading: Icon(Icons.subject),
-                            title: Text(
-                              getEventDescription(schedule),
-                              style: TextStyle(color: Colors.white54),
+                          child: SingleChildScrollView(
+                            child: ListTile(
+                              leading: Icon(Icons.subject),
+                              title: Text(
+                                getEventDescription(schedule),
+                                style: TextStyle(color: Colors.white54),
+                              ),
                             ),
                           ),
                         ),
@@ -820,7 +822,7 @@ class _CategoriesState extends State<Categories> with TickerProviderStateMixin {
   getEventDescription(ScheduleData scheduleData) {
     for (var i in allEvents) {
       if (i.id == scheduleData.eventId) {
-        return i.longDescription;
+        return i.longDescription == "" ? i.shortDescription : i.longDescription;
       }
     }
   }
